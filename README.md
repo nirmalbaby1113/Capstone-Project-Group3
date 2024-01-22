@@ -1,2 +1,3 @@
-# Capstone-Project-Group3
-Source code for Capstone Project (Group-3)
+Capstone-Project-Group3
+
+Nirmal Baby (Developer)
