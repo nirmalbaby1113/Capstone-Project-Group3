@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 class TaskModel (private var documentId: String, private var taskTitle: String, private var priorityType: String,
-                        private var userName: String, private var taskDesc: String, private var taskAmt: String,
+                        private var createdBy: String, private var taskDesc: String, private var taskAmt: String,
                             private var taskTip: String, private var taskDocs: String,
                                 private var taskStatus: String, private var taskAcceptedBy: String): Parcelable {
 
@@ -29,7 +29,7 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
     }
 
     fun getUserName(): String {
-        return userName
+        return createdBy
     }
 
     fun getTaskDesc(): String{
@@ -56,7 +56,7 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
     }
 
     fun setUserName(userName: String) {
-        this.userName = userName
+        this.createdBy = userName
     }
 
     // Parcelable implementation
@@ -70,13 +70,13 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString()?:"",
-        parcel.readString()?:""
+        parcel.readString()?: ""
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(taskTitle)
         parcel.writeString(priorityType)
-        parcel.writeString(userName)
+        parcel.writeString(createdBy)
     }
 
     override fun describeContents(): Int {

@@ -8,13 +8,7 @@
     android:paddingBottom="20dp"
     tools:context=".CreateTaskActivity">
 
-    <ProgressBar
-        android:id="@+id/loadingView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="visible"
-        android:indeterminateTint="@color/white_text" />
+
 
     <LinearLayout
         android:id="@+id/newTaskHeadLayout"
@@ -64,385 +58,46 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/createTaskScrollView"
+
+    <LinearLayout
+        android:id="@+id/buttonsLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_background"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/newTaskHeadLayout">
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnCreateTask"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/black_background">
+            android:layout_weight="1"
+            android:text="Create Task"
+            android:textColor="@color/black_background"
+            android:background="@drawable/round_button_task_history_active" />
 
-            <TextView
-                android:id="@+id/dueTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Due By"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinsmedium"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                />
+        <Space
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/dateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mon, 5 February 2024"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:paddingTop="7dp"
-                android:paddingBottom="7dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_below="@id/dueTextView"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/textview_border_time_date"
-                />
+        <Button
+            android:id="@+id/btnViewTasks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="View Task"
+            android:textColor="@color/black_background"
+            android:background="@drawable/round_button_task_history_inactive" />
 
-            <TextView
-                android:id="@+id/timeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="7:00 PM"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="18dp"
-                android:fontFamily="@font/poppinslight"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="7dp"
-                android:paddingBottom="7dp"
-                android:layout_below="@id/dateTextView"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/textview_border_time_date"
-                />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/setPrioritiesTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Set Priorities*"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinsmedium"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_below="@id/timeTextView"
-                />
-
-            <RadioGroup
-                android:id="@+id/radioGroupPriority"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/setPrioritiesTextView"
-                android:layout_marginTop="28dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:gravity="center">
-
-                <RadioButton
-                    android:id="@+id/radioButtonLow"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppinslight"
-                    android:textColor="@color/green_low_priority"
-                    android:text="Low"
-                    android:drawablePadding="10dp"
-                    android:button="@drawable/custom_radio_button"/>
-
-                <RadioButton
-                    android:id="@+id/radioButtonMedium"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppinslight"
-                    android:textColor="@color/orange_medium_priority"
-                    android:text="Medium"
-                    android:drawablePadding="10dp"
-                    android:checked="true"
-                    android:button="@drawable/custom_radio_button"/>
-
-                <RadioButton
-                    android:id="@+id/radioButtonHigh"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppinslight"
-                    android:textColor="@color/red_background"
-                    android:text="High"
-                    android:button="@drawable/custom_radio_button"/>
-
-            </RadioGroup>
-            <TextView
-                android:id="@+id/taskNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Task Title*"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_below="@id/radioGroupPriority"
-                />
-
-            <TextView
-                android:id="@+id/taskNameRequired"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Required"
-                android:textColor="@color/red_background"
-                android:textSize="12sp"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:layout_below="@id/radioGroupPriority"
-                android:layout_toEndOf="@+id/taskNameTextView"
-                android:layout_alignBaseline="@+id/taskNameTextView"
-                android:visibility="gone"
-                />
-
-
-            <EditText
-                android:id="@+id/editTextTaskName"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/taskNameTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="7dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:background="@drawable/edit_text_border"
-                android:textColorHint="@color/grey_hint_color"
-                android:textColor="@color/white_text"
-                />
-
-            <TextView
-                android:id="@+id/taskDescTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Task Description*"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_below="@id/editTextTaskName"
-                />
-
-            <TextView
-                android:id="@+id/taskDescRequired"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Required"
-                android:textColor="@color/red_background"
-                android:textSize="12sp"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:layout_below="@id/editTextTaskName"
-                android:layout_toEndOf="@+id/taskDescTextView"
-                android:layout_alignBaseline="@+id/taskDescTextView"
-                android:visibility="gone"
-                />
-
-
-            <EditText
-                android:id="@+id/editTextTaskDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/taskDescTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="7dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingTop="15dp"
-                android:background="@drawable/edit_text_border"
-                android:inputType="textMultiLine"
-                android:textColorHint="@color/grey_hint_color"
-                android:minLines="7"
-                android:gravity="top|start"
-                android:textColor="@color/white_text"
-                />
-
-            <TextView
-                android:id="@+id/taskAmountTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cost of Task*"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_below="@id/editTextTaskDescription"
-                />
-
-            <TextView
-                android:id="@+id/taskAmountRequired"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Required"
-                android:textColor="@color/red_background"
-                android:textSize="12sp"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:layout_below="@id/editTextTaskDescription"
-                android:layout_toEndOf="@+id/taskAmountTextView"
-                android:layout_alignBaseline="@+id/taskAmountTextView"
-                android:visibility="gone"
-                />
-
-            <EditText
-                android:id="@+id/editTextTaskAmount"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_below="@+id/taskAmountTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="7dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:background="@drawable/edit_text_border"
-                android:inputType="numberDecimal"
-                android:textColorHint="@color/grey_hint_color"
-                android:textColor="@color/white_text"
-                />
-
-            <TextView
-                android:id="@+id/taskTipTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Task Tip*"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_below="@id/editTextTaskAmount"
-                />
-
-            <TextView
-                android:id="@+id/taskTipRequired"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Required"
-                android:textColor="@color/red_background"
-                android:textSize="12sp"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:layout_below="@id/editTextTaskAmount"
-                android:layout_toEndOf="@+id/taskTipTextView"
-                android:layout_alignBaseline="@+id/taskTipTextView"
-                android:visibility="gone"
-                />
-
-            <EditText
-                android:id="@+id/editTextTaskTip"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_below="@+id/taskTipTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="7dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:background="@drawable/edit_text_border"
-                android:inputType="numberDecimal"
-                android:textColorHint="@color/grey_hint_color"
-                android:textColor="@color/white_text"
-                />
-
-            <TextView
-                android:id="@+id/taskDocumentsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Documents for Task Approval (Optional)"
-                android:textColor="@color/white_text"
-                android:textSize="16sp"
-                android:gravity="end"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/poppinslight"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_below="@id/editTextTaskTip"
-                />
-
-            <EditText
-                android:id="@+id/editTextTaskDocuments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/taskDocumentsTextView"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="7dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingTop="15dp"
-                android:background="@drawable/edit_text_border"
-                android:inputType="textMultiLine"
-                android:textColorHint="@color/grey_hint_color"
-                android:minLines="5"
-                android:gravity="top|start"
-                android:textColor="@color/white_text"
-                />
-
-            <Button
-                android:id="@+id/btnPublishTask"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Publish Task"
-                android:layout_below="@+id/editTextTaskDocuments"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="28dp"
-                android:layout_centerHorizontal="true"
-                android:fontFamily="@font/poppinsmedium"
-                android:background="@drawable/round_button_blue"
-                android:textColor="@color/black_background"
-                android:padding="10dp"
-                />
-
-
-        </RelativeLayout>
-
-
-
-    </ScrollView>
-
-
+    <FrameLayout
+        android:id="@+id/fragmentContainerCreateTask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/buttonsLinearLayout"
+        android:background="@color/black_background">
+    </FrameLayout>
 
 
 
