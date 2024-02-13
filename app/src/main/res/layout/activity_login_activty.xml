@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivty"
+    android:background="@color/black_background">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/wallet"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/linearLayoutLoginCredential"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="App Icon Image" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutLoginCredential"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username*"
+            android:textColor="@color/white_text"
+            android:textSize="16sp"
+            />
+
+        <EditText
+        android:id="@+id/editTextUserName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="7dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:background="@drawable/edit_text_border"
+        android:textColorHint="@color/grey_hint_color"
+        android:textColor="@color/white_text"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password*"
+            android:textColor="@color/white_text"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            />
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="7dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/edit_text_border"
+            android:textColorHint="@color/grey_hint_color"
+            android:textColor="@color/white_text"
+            />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Login"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="28dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppinsmedium"
+            android:background="@drawable/round_button_blue"
+            android:textColor="@color/black_background"
+            android:padding="10dp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

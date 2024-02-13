@@ -1,9 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.CapstoneProject" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.CapstoneProject" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.CapstoneProject" parent="Base.Theme.CapstoneProject" />
+
+
+    <style name="BottomSheetDialogTheme" parent="Widget.Material3.BottomSheet">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

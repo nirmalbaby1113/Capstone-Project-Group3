@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Capstone Project</string>
+    <string name="app_name">PocketBuddy</string>
+    <string name="sample_userId">sampleUser_Nirmal</string>
 </resources>

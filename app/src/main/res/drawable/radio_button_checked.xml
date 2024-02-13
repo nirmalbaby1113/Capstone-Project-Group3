@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Border -->
+    <item>
+        <shape android:shape="oval">
+            <stroke
+                android:color="@color/card_background"
+                android:width="1dp" />
+            <size android:width="12dp" android:height="12dp" />
+        </shape>
+    </item>
+
+    <!-- Filled circle -->
+    <item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/blue_primary" />
+            <size android:width="10dp" android:height="10dp" />
+        </shape>
+    </item>
+
+</layer-list>

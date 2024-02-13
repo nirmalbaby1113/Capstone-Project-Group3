@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@color/white_text"
+    android:padding="16dp"
+    android:elevation="8dp">
+
+    <TextView
+        android:id="@+id/statusMessageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task published successfully"
+        android:textColor="@color/black_background"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:textColor="@color/white_text"
+        android:background="@drawable/round_button_blue"
+        android:layout_below="@+id/statusMessageTextView"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/retryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retry"
+        android:textColor="@color/white_text"
+        android:background="@drawable/round_button_red"
+        android:layout_below="@+id/statusMessageTextView"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"/>
+
+</RelativeLayout>
