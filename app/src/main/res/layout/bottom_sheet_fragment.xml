@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/bottomSheetContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bottom_sheet_background">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TASK DETAILS"
+            android:textSize="24sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Title"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/bottomSheetTaskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Title goes here Task Title goes here Task Title goes here Task Title goes here Task Title goes here"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinslight"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Description"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/bottomSheetTaskDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Description goes here Task Description goes here Task Title goes here Task Title goes here Task Title goes here"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinslight"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Amount"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/bottomSheetTaskAmt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="$ 20"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinslight"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount Earned by You"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/bottomSheetTaskAmtEarned"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="$ 2"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinslight"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Documents Required for Task Completion"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinssemibold"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            />
+
+        <TextView
+            android:id="@+id/bottomSheetTaskDocs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="- Cash receipt"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"
+            android:fontFamily="@font/poppinslight"
+            android:gravity="start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            >
+
+            <Button
+                android:id="@+id/btnCloseBottomSheet"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Close"
+                android:background="@drawable/btn_red_border"
+                android:textColor="@color/red_background"
+                android:fontFamily="@font/poppinslight"
+                />
+
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnAcceptBottomSheet"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_green_border"
+                android:fontFamily="@font/poppinslight"
+                android:text="Accept"
+                android:textColor="@color/green_low_priority" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</ScrollView>
