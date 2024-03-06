@@ -27,10 +27,7 @@ class OnBoardActivity : AppCompatActivity() {
 
         buttonStarted = findViewById(R.id.btnGetStarted)
 
-        val sharedPreferences = getSharedPreferences("OnBoardCheckPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("isOnboardingCompleted", true)
-        editor.apply()
+
 
         setOnBoardingItems()
         setUpIndicator()
@@ -72,7 +69,7 @@ class OnBoardActivity : AppCompatActivity() {
                 super.onPageSelected(position)
                 setUpCurrentIndicator(position)
             }
-        })
+            })
         (onBoardingViewPager.getChildAt(0) as RecyclerView).overScrollMode =
             RecyclerView.OVER_SCROLL_NEVER
         findViewById<ImageView>(R.id.imageNext).setOnClickListener {
@@ -93,6 +90,10 @@ class OnBoardActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainActivity(){
+        val sharedPreferences = getSharedPreferences("OnBoardCheckPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isOnboardingCompleted", true)
+        editor.apply()
         startActivity(Intent(applicationContext, MainActivity::class.java))
         finish()
     }

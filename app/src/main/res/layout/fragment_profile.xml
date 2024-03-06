@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:background="@color/black_background">
+
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white_text"
+        android:textSize="24sp"
+        android:text="Nirmal Baby"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppinssemibold"
+        />
+
+    <TextView
+        android:id="@+id/profileEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white_text"
+        android:textSize="16sp"
+        android:text="nirmalbaby1113@gmail.com"
+        android:layout_below="@id/profileName"
+        android:fontFamily="@font/poppinslight"
+        android:layout_marginTop="5dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/profileImageLayouts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profileEmail"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/paymentSelectionLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="@drawable/imageview_rounded_white_active">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/payment_profile"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textColor="@color/black_background"
+                />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="0dp"/>
+
+        <LinearLayout
+            android:id="@+id/walletSelectionLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="@drawable/imageview_rounded_white">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/wallet_profile"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wallet"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textColor="@color/black_background"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/pageSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/white"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/profileImageLayouts"
+        />
+
+    <FrameLayout
+        android:id="@+id/fragmentContainerCreateTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pageSeparator"
+        android:layout_marginTop="15dp"
+        android:background="@color/black_background">
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/txtViewSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Out"
+        android:textSize="16sp"
+        android:textColor="@color/red_background"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/poppinslight"
+        />
+
+</RelativeLayout>

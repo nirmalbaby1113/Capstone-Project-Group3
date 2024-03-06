@@ -33,7 +33,6 @@ class CreateTaskActivity : AppCompatActivity() {
         val createTaskButton = findViewById<Button>(R.id.btnCreateTask)
         val viewTasksButton = findViewById<Button>(R.id.btnViewTasks)
 
-
         closeTextViewFunctionality(closeTextView)
 
         // Set initial fragment

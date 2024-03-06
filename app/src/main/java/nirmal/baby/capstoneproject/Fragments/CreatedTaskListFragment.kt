@@ -51,7 +51,7 @@ class CreatedTaskListFragment : Fragment() {
         val createdTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, createdTaskListArrayList)
 
         createdTaskListRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         createdTaskListRecyclerView.adapter = createdTaskAdapter
     }
 

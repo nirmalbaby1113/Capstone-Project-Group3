@@ -50,10 +50,10 @@ class HistoryFragment : Fragment() {
             updateButtonBackground(true)
         }
 
-        /*   btnCompleted.setOnClickListener {
-               // Handle the click for the "Completed" button
-               updateButtonBackground(false)
-           }*/
+     /*   btnCompleted.setOnClickListener {
+            // Handle the click for the "Completed" button
+            updateButtonBackground(false)
+        }*/
 
         return view
     }
@@ -64,7 +64,7 @@ class HistoryFragment : Fragment() {
         val inProgressTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, inProgressTaskArrayList)
 
         inProgressTaskRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         inProgressTaskRecyclerView.adapter = inProgressTaskAdapter
     }
 

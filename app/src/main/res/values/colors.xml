@@ -4,6 +4,7 @@
     <color name="white_text">#FFFFFF</color>
     <color name="blue_primary">#4B6DC1</color>
     <color name="blue_primary_light">#C6D1EB</color>
+    <color name="blue_primary_light_less_opacity">#B3C6D1EB</color>
     <color name="card_background">#313131</color>
     <color name="red_background">#FF0000</color>
     <color name="grey_hint_color">#C0C0C0</color>

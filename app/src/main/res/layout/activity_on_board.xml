@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".OnBoardActivity"
     android:background="@color/black_background">
-
+    
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/onBoardingViewPager"
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toTopOf="@id/viewCenterOfNext"
         app:layout_constraintTop_toTopOf="parent"
         />
-
+    
     <LinearLayout
         android:id="@+id/indicatorsContainer"
         android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-
+    
     <TextView
         android:id="@+id/textSkip"
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-
+    
     <View
         android:layout_width="55dp"
         android:layout_height="55dp"

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@color/card_background"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp"
+    android:elevation="8dp">
+
+    <TextView
+        android:id="@+id/imageUploadPopupClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:fontFamily="@font/poppinsmedium"
+        android:textColor="@color/red_background"
+        android:textSize="24sp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        />
+
+    <TextView
+        android:id="@+id/txtViewProof"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Proof for task completion"
+        android:fontFamily="@font/poppinsmedium"
+        android:textColor="@color/white_text"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imageUploadPopupClose"
+        />
+
+    <ImageView
+        android:id="@+id/popupImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+
+        android:background="@drawable/textview_border_time_date"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txtViewProof"/>
+
+    <!-- Button to trigger image upload -->
+    <Button
+        android:id="@+id/btnUploadImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload Image"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/popupImageView"
+        android:textColor="@color/white_text"
+        android:background="@drawable/round_button_blue"/>
+
+    <!-- Button to submit the uploaded image -->
+    <Button
+        android:id="@+id/btnSubmitImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_below="@id/btnUploadImage"
+        android:background="@drawable/round_button_blue"
+        android:textColor="@color/white_text"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>
+

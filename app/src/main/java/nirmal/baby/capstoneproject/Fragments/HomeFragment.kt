@@ -1,5 +1,6 @@
 package nirmal.baby.capstoneproject.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,11 +21,13 @@ import nirmal.baby.capstoneproject.R
 
 class HomeFragment : Fragment() {
 
+
     private var priorityTaskArrayList: ArrayList<TaskModel> = ArrayList()
     private var generalTaskArrayList: ArrayList<TaskModel> = ArrayList()
     private lateinit var priorityTaskRecyclerView: RecyclerView
     private lateinit var progressBarLinearLayout: LinearLayout
     private lateinit var baseLinearLayout: LinearLayout
+    private lateinit var nameHeadingTextView: TextView
     private val MAX_RETRIES = 3
     private var retryCount = 0
 
@@ -36,8 +40,10 @@ class HomeFragment : Fragment() {
         priorityTaskRecyclerView = view.findViewById(R.id.priorityTaskRecyclerView)
         progressBarLinearLayout = view.findViewById(R.id.progressBarLinearLayout)
         baseLinearLayout = view.findViewById(R.id.baseLinearLayout)
+        nameHeadingTextView = view.findViewById(R.id.welcomeName)
 
-        progressBarLinearLayout.visibility = View.VISIBLE
+        nameHeadingTextView.text = "Welcome ${getUserNameFromPrefs()},"
+
 
         recyclerViewDataInitializing(priorityTaskRecyclerView, view.findViewById(R.id.generalTaskListRecyclerView))
         fetchTasks {
@@ -65,6 +71,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchTasks(callback: () -> Unit) {
+        progressBarLinearLayout.visibility = View.VISIBLE
         val firestore = FirebaseFirestore.getInstance()
 
         // Reference to the "tasks" collection
@@ -129,5 +136,10 @@ class HomeFragment : Fragment() {
         priorityTaskRecyclerView.adapter?.notifyDataSetChanged()
 
         Log.d("RecyclerViewUpdate", "RecyclerView updated")
+    }
+
+    private fun getUserNameFromPrefs(): String? {
+        val sharedPreferences = context?.getSharedPreferences("UserNamePrefs", Context.MODE_PRIVATE)
+        return sharedPreferences?.getString("username","")
     }
 }

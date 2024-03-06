@@ -13,18 +13,18 @@ import nirmal.baby.capstoneproject.R
 class OnBoardingItemsAdapter(private val onBoardingItems: List<OnBoardingItem>) :
     RecyclerView.Adapter<OnBoardingItemsAdapter.OnBoardingItemViewHolder>(){
 
-    inner class OnBoardingItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val imageOnBoarding = view.findViewById<ImageView>(R.id.imageOnBoarding)
-        private val textTitleOnBoarding = view.findViewById<TextView>(R.id.textOnBoardTitle)
-        private val textDescriptionOnBoarding = view.findViewById<TextView>(R.id.textOnBoardDesc)
+        inner class OnBoardingItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            private val imageOnBoarding = view.findViewById<ImageView>(R.id.imageOnBoarding)
+            private val textTitleOnBoarding = view.findViewById<TextView>(R.id.textOnBoardTitle)
+            private val textDescriptionOnBoarding = view.findViewById<TextView>(R.id.textOnBoardDesc)
 
 
-        fun bind(onBoardingItem: OnBoardingItem) {
-            imageOnBoarding.setImageResource(onBoardingItem.onBoardingImage)
-            textTitleOnBoarding.text = onBoardingItem.title
-            textDescriptionOnBoarding.text = onBoardingItem.description
+            fun bind(onBoardingItem: OnBoardingItem) {
+                imageOnBoarding.setImageResource(onBoardingItem.onBoardingImage)
+                textTitleOnBoarding.text = onBoardingItem.title
+                textDescriptionOnBoarding.text = onBoardingItem.description
+            }
         }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnBoardingItemViewHolder {
         return OnBoardingItemViewHolder(

@@ -22,18 +22,41 @@
             android:paddingTop="20dp"
             />
 
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Task Title"
-            android:textSize="16sp"
-            android:textColor="@color/white_text"
-            android:fontFamily="@font/poppinssemibold"
-            android:gravity="start"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:paddingTop="20dp"
-            />
+            android:orientation="horizontal"
+            android:layout_gravity="start"
+            android:gravity="start"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Title"
+                android:textSize="16sp"
+                android:textColor="@color/white_text"
+                android:fontFamily="@font/poppinssemibold"
+
+                />
+
+            <TextView
+                android:id="@+id/bottomSheetInProgressText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="In Progress"
+                android:textSize="16sp"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/orange_medium_priority"
+                android:fontFamily="@font/poppinssemibold"
+                android:visibility="invisible"
+                />
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/bottomSheetTaskTitle"
@@ -218,10 +241,11 @@
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_green_border"
-                android:fontFamily="@font/poppinslight"
                 android:text="Accept"
-                android:textColor="@color/green_low_priority" />
+                android:fontFamily="@font/poppinslight"
+                android:background="@drawable/btn_green_border"
+                android:textColor="@color/green_low_priority"
+                />
 
 
         </LinearLayout>
@@ -231,3 +255,5 @@
 
 
 </ScrollView>
+
+
