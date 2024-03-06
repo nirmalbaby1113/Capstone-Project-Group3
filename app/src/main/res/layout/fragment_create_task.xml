@@ -332,6 +332,22 @@
                 />
 
             <TextView
+                android:id="@+id/taskTotalAmtInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_hint_color"
+                android:textSize="14sp"
+                android:gravity="end"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/poppinslight"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textStyle="italic"
+                android:layout_below="@id/editTextTaskTip"
+                android:visibility="gone"
+                />
+
+            <TextView
                 android:id="@+id/taskDocumentsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -343,7 +359,7 @@
                 android:fontFamily="@font/poppinslight"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:layout_below="@id/editTextTaskTip"
+                android:layout_below="@id/taskTotalAmtInfo"
                 />
 
             <EditText
@@ -369,7 +385,7 @@
                 android:id="@+id/btnPublishTask"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Publish Task"
+                android:text="Proceed to Pay"
                 android:layout_below="@+id/editTextTaskDocuments"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"

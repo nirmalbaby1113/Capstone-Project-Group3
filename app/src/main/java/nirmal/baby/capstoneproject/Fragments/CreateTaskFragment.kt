@@ -5,6 +5,9 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +19,15 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
+import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.json.responseJson
+import com.github.kittinunf.result.Result
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.stripe.android.PaymentConfiguration
+import com.stripe.android.paymentsheet.PaymentSheet
+import com.stripe.android.paymentsheet.PaymentSheetResult
 import nirmal.baby.capstoneproject.MainActivity
 import nirmal.baby.capstoneproject.R
 import java.text.SimpleDateFormat
@@ -28,6 +38,11 @@ class CreateTaskFragment : Fragment() {
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var paymentSheet: PaymentSheet
+    private lateinit var customerConfig: PaymentSheet.CustomerConfiguration
+    private lateinit var paymentIntentClientSecret: String
+    private var amountGlobal: Int = 0
+    private var taskData: HashMap<String, String> = hashMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +50,7 @@ class CreateTaskFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_create_task, container, false)
 
+        showTotalAmtInfoTextview(view)
         var selectedPriority: String = "Medium"
         val dateTextView = view.findViewById<TextView>(R.id.dateTextView)
         val timeTextView = view.findViewById<TextView>(R.id.timeTextView)
@@ -43,6 +59,9 @@ class CreateTaskFragment : Fragment() {
         // Initialize Firebase
         firebaseAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+        //Log.d("CreateTaskFragment","here ${PaymentSheet(requireActivity(), ::onPaymentSheetResult)}")
+
+        paymentSheet = PaymentSheet(requireActivity(), ::onPaymentSheetResult)
 
 
         dateTextView.text = getCurrentDate()
@@ -77,8 +96,6 @@ class CreateTaskFragment : Fragment() {
 
         return view
     }
-
-
 
     private fun getCurrentDate(): String {
         val calendar = Calendar.getInstance()
@@ -209,8 +226,9 @@ class CreateTaskFragment : Fragment() {
             // Show loading icon
             view.findViewById<View>(R.id.loadingView).visibility = View.VISIBLE
 
+            amountGlobal = taskAmt.text.toString().toInt() + taskTip.text.toString().toInt()
             // Create a data object to be stored in Firestore
-            val taskData = hashMapOf(
+            taskData = hashMapOf(
                 "title" to taskTitle.text.toString(),
                 "description" to taskDescription.text.toString(),
                 "amount" to taskAmt.text.toString(),
@@ -221,21 +239,8 @@ class CreateTaskFragment : Fragment() {
                 "timeDue" to timeText.text.toString(),
                 "createdBy" to "sampleUser_Nirmal"//firebaseAuth.currentUser?.uid // Assuming you want to associate the task with the current user
             )
+            getDetails(amountGlobal)
 
-            // Add the data to Firestore
-            firestore.collection("tasks")
-                .add(taskData)
-                .addOnSuccessListener {
-                    // Data added successfully
-                    // Show pop-up with "OK" button
-                    view.findViewById<View>(R.id.loadingView).visibility = View.INVISIBLE
-                    showStatusPopup(true)
-                }
-                .addOnFailureListener {
-                    // Handle errors
-                    // Show pop-up with "Retry" button
-                    showStatusPopup(false)
-                }
         }
 
 
@@ -261,7 +266,7 @@ class CreateTaskFragment : Fragment() {
             retryButton.visibility = View.GONE
             okButton.setOnClickListener {
                 dialog.dismiss()
-
+                clearEditTextFields()
             }
         } else {
             // Error in publishing task, show "Retry" button
@@ -275,6 +280,206 @@ class CreateTaskFragment : Fragment() {
         dialog.show()
     }
 
+    private fun showTotalAmtInfoTextview(view: View){
+        val editTextTaskTip: EditText = view.findViewById<EditText>(R.id.editTextTaskTip)
+        val taskTotalAmtInfo: TextView = view.findViewById<TextView>(R.id.taskTotalAmtInfo)
+        val editTextTaskAmount: EditText = view.findViewById<EditText>(R.id.editTextTaskAmount)
+        var tipText = "0"
+        var amountText = "0"
+
+        editTextTaskTip.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                tipText = editTextTaskTip.text.toString()
+                amountText = editTextTaskAmount.text.toString()
+                // Check if the EditText is not empty, then show the TextView
+                if (!p0.isNullOrBlank() && tipText.isNotEmpty() && amountText.isNotEmpty()) {
+                    Log.d("CreateTaskFragment","Inside If Text Changed")
+                    val totalAmount = tipText.toDouble() + amountText.toDouble()
+                    taskTotalAmtInfo.text = "Total Payable amount will be CAD $totalAmount "
+                    taskTotalAmtInfo.visibility = View.VISIBLE
+                } else {
+                    Log.d("CreateTaskFragment","Inside Else Text Changed (Tip Text) ${tipText.isNotEmpty()}")
+                    Log.d("CreateTaskFragment","Inside Else Text Changed (Amount Text) ${amountText.isNotEmpty()}")
+                    // Hide the TextView if the EditText is empty
+                    taskTotalAmtInfo.visibility = View.GONE
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+
+        editTextTaskAmount.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val editTextTaskTip: EditText = view.findViewById<EditText>(R.id.editTextTaskTip)
+                val taskTotalAmtInfo: TextView = view.findViewById<TextView>(R.id.taskTotalAmtInfo)
+                val editTextTaskAmount: EditText = view.findViewById<EditText>(R.id.editTextTaskAmount)
+                var tipText = "0"
+                var amountText = "0"
+
+                tipText = editTextTaskTip.text.toString()
+                amountText = editTextTaskAmount.text.toString()
+                // Check if the EditText is not empty, then show the TextView
+                if (!p0.isNullOrBlank() && tipText.isNotEmpty() && amountText.isNotEmpty()) {
+                    Log.d("CreateTaskFragment","Inside If Text Changed")
+                    val totalAmount = tipText.toDouble() + amountText.toDouble()
+                    taskTotalAmtInfo.text = "Total Payable amount will be CAD $totalAmount "
+                    taskTotalAmtInfo.visibility = View.VISIBLE
+                } else {
+                    Log.d("CreateTaskFragment","Inside Else Text Changed (Tip Text) ${tipText.isNotEmpty()}")
+                    Log.d("CreateTaskFragment","Inside Else Text Changed (Amount Text) ${amountText.isNotEmpty()}")
+                    // Hide the TextView if the EditText is empty
+                    taskTotalAmtInfo.visibility = View.GONE
+                }
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
+
+    }
+
+    private fun getDetails(amount: Int) {
+        Log.d("CreateTaskFragment", "Inside getDetails")
+
+        val activity = activity
+
+
+        if (activity != null) {
+            Log.d("CreateTaskFragment", "Inside getDetails if $amount")
+            "https://us-central1-in-class-f09db.cloudfunctions.net/helloWorld?amt=${amount*100}"
+                .httpPost().responseJson { _, _, result ->
+                    Log.d("CreateTaskFragment", "Inside getDetails httpPost")
+                    if (result is Result.Success) {
+                        val responseJson = result.get().obj()
+                        paymentIntentClientSecret = responseJson.getString("paymentIntent")
+                        customerConfig = PaymentSheet.CustomerConfiguration(
+                            responseJson.getString("customer"),
+                            responseJson.getString("ephemeralKey")
+                        )
+
+                        val publishableKey = responseJson.getString("publishableKey")
+                        PaymentConfiguration.init(activity, publishableKey)
+
+                        activity.runOnUiThread {
+                            Log.d("CreateTaskFragment", "Inside getDetails2")
+                            showStripePaymentSheet()
+                        }
+                    }else{
+                        Log.d("CreateTaskFragment", "Inside getDetails httpPost else $result")
+                    }
+                }
+        } else {
+            Log.e("CreateTaskFragment", "Activity is null")
+        }
+    }
+
+    private fun showStripePaymentSheet(){
+        Log.d("CreateTaskFragment","Inside showStripePaymentSheet")
+        paymentSheet.presentWithPaymentIntent(
+            paymentIntentClientSecret,
+            PaymentSheet.Configuration(
+                merchantDisplayName = "My merchant name",
+                customer = customerConfig,
+                // Set `allowsDelayedPaymentMethods` to true if your business handles
+                // delayed notification payment methods like US bank accounts.
+                allowsDelayedPaymentMethods = true
+            )
+        )
+    }
+
+    private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
+        // implemented in the next steps
+        when(paymentSheetResult) {
+            is PaymentSheetResult.Canceled -> {
+                print("Canceled")
+                Log.d("CardPaymentActivity","Success")
+            }
+            is PaymentSheetResult.Failed -> {
+                Log.d("CardPaymentActivity","Failed: ${paymentSheetResult.error}")
+            }
+            is PaymentSheetResult.Completed -> {
+                // Display for example, an order confirmation screen
+                Log.d("CardPaymentActivity","Completed")
+                writePaymentDetailsToFirestore()
+            }
+        }
+    }
+
+    private fun writePaymentDetailsToFirestore() {
+        val db = FirebaseFirestore.getInstance()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val paymentDetails = hashMapOf(
+            "amount" to amountGlobal.toString(),
+            "currency" to "CAD",
+            "paymentMethod" to "Card",
+            "payerId" to (currentUser?.uid ?: "unknown_user"),
+            "status" to "Completed",
+        )
+
+        Log.d("CreateTaskFragment","One: ${paymentDetails["amount"]}")
+        Log.d("CreateTaskFragment","One: ${paymentDetails["payerId"]}")
+
+        db.collection("payments")
+            .add(paymentDetails)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val documentReference = task.result
+                    Log.d("CardPaymentActivity", "Payment details written with ID: ${documentReference?.id}")
+                    writeTaskDetailsToFirestore()
+                } else {
+                    val e = task.exception
+                    Log.e("CardPaymentActivity", "Error adding payment details", e)
+                    // Handle the error appropriately
+                }
+            }
+    }
+
+    private fun writeTaskDetailsToFirestore(){
+
+        // Add the data to Firestore
+        firestore.collection("tasks")
+            .add(taskData)
+            .addOnSuccessListener {
+                // Data added successfully
+                // Show pop-up with "OK" button
+                view?.findViewById<View>(R.id.loadingView)?.visibility = View.INVISIBLE
+                showStatusPopup(true)
+            }
+            .addOnFailureListener {
+                // Handle errors
+                // Show pop-up with "Retry" button
+                showStatusPopup(false)
+            }
+    }
+
+
+    private fun clearEditTextFields() {
+        val taskTitle = view?.findViewById<EditText>(R.id.editTextTaskName)
+        val taskDescription = view?.findViewById<EditText>(R.id.editTextTaskDescription)
+        val taskAmount = view?.findViewById<EditText>(R.id.editTextTaskAmount)
+        val taskTip = view?.findViewById<EditText>(R.id.editTextTaskTip)
+        val taskDocuments = view?.findViewById<EditText>(R.id.editTextTaskDocuments)
+
+        taskTitle?.text?.clear()
+        taskDescription?.text?.clear()
+        taskAmount?.text?.clear()
+        taskTip?.text?.clear()
+        taskDocuments?.text?.clear()
+    }
 
 
 }
