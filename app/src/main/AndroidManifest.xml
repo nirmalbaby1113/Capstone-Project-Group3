@@ -13,6 +13,9 @@
         android:theme="@style/Theme.CapstoneProject"
         tools:targetApi="31">
         <activity
+            android:name=".CardPaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".OnBoardActivity"
             android:exported="false">
             <intent-filter>
