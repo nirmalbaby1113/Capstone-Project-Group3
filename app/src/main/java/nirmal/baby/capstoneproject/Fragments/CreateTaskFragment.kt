@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
+import nirmal.baby.capstoneproject.CardPaymentActivity
 import nirmal.baby.capstoneproject.MainActivity
 import nirmal.baby.capstoneproject.R
 import java.text.SimpleDateFormat
@@ -41,7 +42,6 @@ class CreateTaskFragment : Fragment() {
     private lateinit var paymentSheet: PaymentSheet
     private lateinit var customerConfig: PaymentSheet.CustomerConfiguration
     private lateinit var paymentIntentClientSecret: String
-    private var amountGlobal: Int = 0
     private var taskData: HashMap<String, String> = hashMapOf()
 
     override fun onCreateView(
@@ -61,7 +61,7 @@ class CreateTaskFragment : Fragment() {
         firestore = FirebaseFirestore.getInstance()
         //Log.d("CreateTaskFragment","here ${PaymentSheet(requireActivity(), ::onPaymentSheetResult)}")
 
-        paymentSheet = PaymentSheet(requireActivity(), ::onPaymentSheetResult)
+       // paymentSheet = PaymentSheet(requireActivity(), ::onPaymentSheetResult)
 
 
         dateTextView.text = getCurrentDate()
@@ -196,6 +196,7 @@ class CreateTaskFragment : Fragment() {
         val scrollViewCreateTask = view.findViewById<ScrollView>(R.id.createTaskScrollView)
         val dateText = view.findViewById<TextView>(R.id.dateTextView)
         val timeText = view.findViewById<TextView>(R.id.timeTextView)
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
         // Validating fields
         if (taskTitle.text.toString().isEmpty()){
@@ -226,9 +227,9 @@ class CreateTaskFragment : Fragment() {
             // Show loading icon
             view.findViewById<View>(R.id.loadingView).visibility = View.VISIBLE
 
-            amountGlobal = taskAmt.text.toString().toInt() + taskTip.text.toString().toInt()
+            //amountGlobal = taskAmt.text.toString().toInt() + taskTip.text.toString().toInt()
             // Create a data object to be stored in Firestore
-            taskData = hashMapOf(
+            /*taskData = hashMapOf(
                 "title" to taskTitle.text.toString(),
                 "description" to taskDescription.text.toString(),
                 "amount" to taskAmt.text.toString(),
@@ -237,9 +238,29 @@ class CreateTaskFragment : Fragment() {
                 "docs" to taskDocs,
                 "dateDue" to dateText.text.toString(),
                 "timeDue" to timeText.text.toString(),
-                "createdBy" to "sampleUser_Nirmal"//firebaseAuth.currentUser?.uid // Assuming you want to associate the task with the current user
-            )
-            getDetails(amountGlobal)
+                "createdBy" to
+            )*/
+            //getDetails(amountGlobal)
+
+
+            val dataBundle = Bundle().apply {
+                putString("title", taskTitle.text.toString())
+                putString("description", taskDescription.text.toString())
+                putString("amount", taskAmt.text.toString())
+                putString("tip", taskTip.text.toString())
+                putString("priority", selectedPriority)
+                putString("docs", taskDocs)
+                putString("dateDue", dateText.text.toString())
+                putString("timeDue", timeText.text.toString())
+                putString("createdBy",(currentUser?.displayName ?: "unknown_user"))
+            }
+            val intent = Intent(activity, CardPaymentActivity::class.java).apply {
+                putExtras(dataBundle)
+            }
+            startActivity(intent)
+            //activity?.finish()
+
+
 
         }
 
@@ -266,7 +287,7 @@ class CreateTaskFragment : Fragment() {
             retryButton.visibility = View.GONE
             okButton.setOnClickListener {
                 dialog.dismiss()
-                clearEditTextFields()
+                //clearEditTextFields()
             }
         } else {
             // Error in publishing task, show "Retry" button
@@ -289,7 +310,6 @@ class CreateTaskFragment : Fragment() {
 
         editTextTaskTip.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -351,7 +371,7 @@ class CreateTaskFragment : Fragment() {
         })
 
     }
-
+/*
     private fun getDetails(amount: Int) {
         Log.d("CreateTaskFragment", "Inside getDetails")
 
@@ -417,9 +437,9 @@ class CreateTaskFragment : Fragment() {
                 writePaymentDetailsToFirestore()
             }
         }
-    }
+    }*/
 
-    private fun writePaymentDetailsToFirestore() {
+    /*private fun writePaymentDetailsToFirestore() {
         val db = FirebaseFirestore.getInstance()
         val currentUser = FirebaseAuth.getInstance().currentUser
         val paymentDetails = hashMapOf(
@@ -446,9 +466,9 @@ class CreateTaskFragment : Fragment() {
                     // Handle the error appropriately
                 }
             }
-    }
+    }*/
 
-    private fun writeTaskDetailsToFirestore(){
+   /* private fun writeTaskDetailsToFirestore(){
 
         // Add the data to Firestore
         firestore.collection("tasks")
@@ -464,10 +484,10 @@ class CreateTaskFragment : Fragment() {
                 // Show pop-up with "Retry" button
                 showStatusPopup(false)
             }
-    }
+    }*/
 
 
-    private fun clearEditTextFields() {
+    /*private fun clearEditTextFields() {
         val taskTitle = view?.findViewById<EditText>(R.id.editTextTaskName)
         val taskDescription = view?.findViewById<EditText>(R.id.editTextTaskDescription)
         val taskAmount = view?.findViewById<EditText>(R.id.editTextTaskAmount)
@@ -480,6 +500,7 @@ class CreateTaskFragment : Fragment() {
         taskTip?.text?.clear()
         taskDocuments?.text?.clear()
     }
+    */
 
 
 }

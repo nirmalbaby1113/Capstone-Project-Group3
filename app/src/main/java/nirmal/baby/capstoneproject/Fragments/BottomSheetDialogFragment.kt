@@ -65,7 +65,7 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
             acceptButton.visibility =View.VISIBLE
         }
 
-        if (taskItem?.getUserName() == "sampleUser_Nirmal"){
+        if (taskItem?.getUserName() == FirebaseAuth.getInstance().currentUser?.displayName.toString()){
             acceptButton.visibility = View.GONE
         }
 
@@ -81,7 +81,7 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
             taskTipDialog.text = this.taskItem?.getTaskTip()
         }
 
-
+ 
 
         closeButton.setOnClickListener {
             dismiss()
@@ -115,11 +115,6 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
                     // Get the current user ID from Firebase Authentication
                     val currentUser = FirebaseAuth.getInstance().currentUser
                     var currentUserId = currentUser?.uid
-
-                    //will change this after implementing firebase auth
-                    if (currentUserId == null){
-                        currentUserId = getString(R.string.sample_userId)
-                    }
 
                     if (documentId != null && currentUserId != null) {
                         // Update the specific fields in Firestore

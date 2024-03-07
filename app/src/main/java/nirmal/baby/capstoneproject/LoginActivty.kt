@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,12 +26,29 @@ class LoginActivty : AppCompatActivity() {
 
     private lateinit var authFirebase: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_activty)
 
         val toSignUpTextView: TextView = findViewById(R.id.txtViewSignUp)
         val googleSignInImage: ImageView =findViewById(R.id.signInWithGoogleImage)
+        val loginButton: Button = findViewById(R.id.btnLogin)
+        val emailEditTextView: EditText = findViewById(R.id.editTextEmailLogin)
+        val passwordEditTextView: EditText = findViewById(R.id.editTextPasswordLogin)
+        val warningTextView: TextView = findViewById(R.id.txtViewWarningLoginIn)
+
+        loginButton.setOnClickListener {
+            if (emailEditTextView.text.isBlank() || emailEditTextView.text.isEmpty()) {
+                warningTextView.visibility = View.VISIBLE
+                warningTextView.text = "Email is required"
+            } else if (passwordEditTextView.text.isBlank() || passwordEditTextView.text.isEmpty()) {
+                warningTextView.visibility = View.VISIBLE
+                warningTextView.text = "Email is required"
+            } else {
+                loginEmailAndPass(emailEditTextView.text.toString(), passwordEditTextView.text.toString())
+            }
+        }
 
         authFirebase = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -52,6 +72,28 @@ class LoginActivty : AppCompatActivity() {
     private fun signInGoogle(){
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
+    }
+
+    private fun loginEmailAndPass(email: String,password: String ){
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val currentUser = FirebaseAuth.getInstance().currentUser
+                    // Login successful
+                    currentUser?.let {
+                        val fullName = it.displayName
+                        val intent: Intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra("email",email)
+                        intent.putExtra("name",fullName)
+                        startActivity(intent)
+                    }
+
+                    // Navigate to the next screen or perform any other actions
+                } else {
+                    // Login failed
+                    //showToast("Login failed: ${task.exception?.message}")
+                }
+            }
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){

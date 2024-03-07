@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import nirmal.baby.capstoneproject.AdapterClass.TaskAdapter
 import nirmal.baby.capstoneproject.Data.TaskData
@@ -81,7 +83,7 @@ class CreatedTaskListFragment : Fragment() {
                     Log.d("FetchTasks", "Doc Id: ${documentId}")
 
                     // Add the task to the appropriate list based on priority
-                    if (taskModel.getUserName() == "sampleUser_Nirmal"){
+                    if (taskModel.getUserName() == FirebaseAuth.getInstance().currentUser?.displayName.toString()){
                         Log.d("FetchTasks", "If latest")
                         createdTaskListArrayList.add(taskModel)
                     }else{

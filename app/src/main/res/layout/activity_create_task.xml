@@ -39,13 +39,13 @@
                 android:id="@+id/txtViewClose"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Close"
+                android:text="X"
                 android:layout_weight="0.5"
                 android:textColor="@color/red_background"
-                android:textSize="14sp"
+                android:textSize="24sp"
                 android:layout_gravity="center"
                 android:gravity="end"
-                android:fontFamily="@font/poppinslight"
+                android:fontFamily="@font/poppinssemibold"
                 />
 
         </LinearLayout>
