@@ -5,17 +5,25 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import nirmal.baby.capstoneproject.AdapterClass.TaskAdapter
 import nirmal.baby.capstoneproject.Data.TaskData
+import nirmal.baby.capstoneproject.MainActivity
 import nirmal.baby.capstoneproject.ModelClass.TaskModel
 import nirmal.baby.capstoneproject.R
 
@@ -25,9 +33,12 @@ class HomeFragment : Fragment() {
     private var priorityTaskArrayList: ArrayList<TaskModel> = ArrayList()
     private var generalTaskArrayList: ArrayList<TaskModel> = ArrayList()
     private lateinit var priorityTaskRecyclerView: RecyclerView
+    private lateinit var generalTaskRecyclerView: RecyclerView
     private lateinit var progressBarLinearLayout: LinearLayout
     private lateinit var baseLinearLayout: LinearLayout
     private lateinit var nameHeadingTextView: TextView
+    private lateinit var filterImageView: ImageView
+    private var filterText = "none"
     private val MAX_RETRIES = 3
     private var retryCount = 0
 
@@ -38,9 +49,16 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         priorityTaskRecyclerView = view.findViewById(R.id.priorityTaskRecyclerView)
+        generalTaskRecyclerView = view.findViewById(R.id.generalTaskListRecyclerView)
         progressBarLinearLayout = view.findViewById(R.id.progressBarLinearLayout)
         baseLinearLayout = view.findViewById(R.id.baseLinearLayout)
         nameHeadingTextView = view.findViewById(R.id.welcomeName)
+        filterImageView = view.findViewById(R.id.imageFilter)
+
+        filterImageView.setOnClickListener {
+            showFilterPopup()
+        }
+
 
         nameHeadingTextView.text = "Welcome ${getUserNameFromPrefs()},"
 
@@ -94,22 +112,40 @@ class HomeFragment : Fragment() {
                     val taskModel = TaskModel(documentId,task.title, task.priority,
                         task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy)
 
-                    Log.d("FetchTasks", "Doc Id: ${documentId}")
+                    //Log.d("FetchTasks", "Doc Id: ${documentId}")
 
                     // Add the task to the appropriate list based on priority
-                    if (taskModel.getTaskStatus() == "Not Accepted"){
+                    if (taskModel.getTaskStatus() == "Not Accepted" && taskModel.getUserName() != FirebaseAuth.getInstance().currentUser?.displayName.toString()){
                         if (taskModel.getPriorityType() == "High") {
                             priorityTaskArrayList.add(taskModel)
                         } else {
-                            generalTaskArrayList.add(taskModel)
+                            Log.d("HomeFragment", "Else in High")
+                            if (filterText == "none"){
+                                Log.d("HomeFragment", "None")
+                                generalTaskArrayList.add(taskModel)
+                            }else {
+                                Log.d("HomeFragment", "Star Low nd Medium")
+                                if (filterText == "Low" && taskModel.getPriorityType() == "Low"){
+                                    Log.d("HomeFragment", "Low")
+                                    generalTaskArrayList.add(taskModel)
+                                }else if (filterText == "Medium" && taskModel.getPriorityType() == "Medium"){
+                                    Log.d("HomeFragment", "Medium")
+                                    generalTaskArrayList.add(taskModel)
+                                }else {
+                                    Log.d("HomeFragment", "Medium else")
+                                }
+                            }
+
                         }
                     }
 
 
                 }
+                val generalTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, generalTaskArrayList)
+                generalTaskRecyclerView.adapter = generalTaskAdapter
                 // Log the size of the updated list
-                Log.d("FetchTasks", "Updated task list size: ${priorityTaskArrayList.size}")
-
+                Log.d("HomeFragment", "Updated task list size: ${priorityTaskArrayList.size}")
+                Log.d("HomeFragment", "Updated task list size general: ${generalTaskArrayList.size}")
                 // Invoke the callback to update the UI
                 callback.invoke()
             }
@@ -129,6 +165,73 @@ class HomeFragment : Fragment() {
                 }
             }
     }
+
+    private fun showFilterPopup() {
+        val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.popup_filter, null)
+
+        val widthInPixels = 1200
+        val heightInPixels = 1100
+        val popupWindow = PopupWindow(
+            popupView,
+            widthInPixels,
+            heightInPixels,
+            true
+        )
+
+        // Set up buttons and radio buttons
+        val buttonOk = popupView.findViewById<Button>(R.id.buttonOk)
+        val buttonCancel = popupView.findViewById<Button>(R.id.buttonCancel)
+        val radioGroupPriority = popupView.findViewById<RadioGroup>(R.id.radioGroupPriorityPopUp)
+        val radioButtonLowPriority = popupView.findViewById<RadioButton>(R.id.radioButtonLowPopUp)
+        val radioButtonMediumPriority = popupView.findViewById<RadioButton>(R.id.radioButtonMediumPopUp)
+
+        // Dismiss the pop-up window when the cancel button is clicked
+        buttonCancel.setOnClickListener {
+            popupWindow.dismiss()
+        }
+
+        // Handle filter action when the OK button is clicked
+        buttonOk.setOnClickListener {
+            // Get the selected radio button
+            val selectedRadioButtonId = radioGroupPriority.checkedRadioButtonId
+
+            if (selectedRadioButtonId != -1) {
+                val radioButton = popupView.findViewById<RadioButton>(selectedRadioButtonId)
+
+                // Get the text of the selected radio button
+                //filterText = radioButton.text.toString()
+                if (radioButton.id == R.id.radioButtonMediumPopUp){
+                    Log.d("HomeFragment","Popup selected medium:")
+                    filterText = "Medium"
+                } else if (radioButton.id == R.id.radioButtonLowPopUp) {
+                    Log.d("HomeFragment","Popup selected low:")
+                    filterText = "Low"
+                } else {
+                    Log.d("HomeFragment","Popup selected all:")
+                    filterText = "none"
+                }
+
+
+                Log.d("HomeFragment","Popup:$filterText")
+
+                fetchTasks {
+                    updateRecyclerView()
+                }
+                // Apply filter based on the selected priority
+
+                // Dismiss the pop-up window
+                popupWindow.dismiss()
+            } else {
+                // No radio button selected, show a message or take appropriate action
+            }
+        }
+
+        // Show the pop-up window
+        popupWindow.showAtLocation(requireActivity().window.decorView, Gravity.CENTER, 0, 0)
+    }
+
+
 
 
     private fun updateRecyclerView() {
