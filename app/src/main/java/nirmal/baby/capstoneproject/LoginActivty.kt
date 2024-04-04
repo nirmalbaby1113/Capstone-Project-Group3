@@ -1,7 +1,9 @@
 package nirmal.baby.capstoneproject
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -26,17 +28,19 @@ class LoginActivty : AppCompatActivity() {
 
     private lateinit var authFirebase: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var toSignUpTextView: TextView
+    private lateinit var googleSignInImage: ImageView
+    private lateinit var loginButton: Button
+    private lateinit var emailEditTextView: EditText
+    private lateinit var passwordEditTextView: EditText
+    private lateinit var warningTextView: TextView
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_activty)
 
-        val toSignUpTextView: TextView = findViewById(R.id.txtViewSignUp)
-        val googleSignInImage: ImageView =findViewById(R.id.signInWithGoogleImage)
-        val loginButton: Button = findViewById(R.id.btnLogin)
-        val emailEditTextView: EditText = findViewById(R.id.editTextEmailLogin)
-        val passwordEditTextView: EditText = findViewById(R.id.editTextPasswordLogin)
-        val warningTextView: TextView = findViewById(R.id.txtViewWarningLoginIn)
+        initializeUiElements()
 
         loginButton.setOnClickListener {
             if (emailEditTextView.text.isBlank() || emailEditTextView.text.isEmpty()) {
@@ -59,7 +63,7 @@ class LoginActivty : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this,gso)
 
         googleSignInImage.setOnClickListener {
-            signInGoogle()
+            signInGoogleDirect()
         }
 
 
@@ -69,7 +73,17 @@ class LoginActivty : AppCompatActivity() {
         }
     }
 
-    private fun signInGoogle(){
+    private fun initializeUiElements(){
+        toSignUpTextView = findViewById(R.id.txtViewSignUp)
+        googleSignInImage =findViewById(R.id.signInWithGoogleImage)
+        loginButton = findViewById(R.id.btnLogin)
+        emailEditTextView = findViewById(R.id.editTextEmailLogin)
+        passwordEditTextView = findViewById(R.id.editTextPasswordLogin)
+        warningTextView = findViewById(R.id.txtViewWarningLoginIn)
+    }
+
+
+    private fun signInGoogleDirect(){
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }
@@ -87,11 +101,8 @@ class LoginActivty : AppCompatActivity() {
                         intent.putExtra("name",fullName)
                         startActivity(intent)
                     }
-
-                    // Navigate to the next screen or perform any other actions
                 } else {
-                    // Login failed
-                    //showToast("Login failed: ${task.exception?.message}")
+
                 }
             }
     }
@@ -131,6 +142,7 @@ class LoginActivty : AppCompatActivity() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         val uid = account.id ?: firebaseUser?.uid ?: ""
         val userDocRef = db.collection("users").document(uid)
+        sharedPreferences = getSharedPreferences("LocationPrefs", Context.MODE_PRIVATE)
 
         userDocRef.get().addOnCompleteListener { documentSnapshot ->
             if (documentSnapshot.isSuccessful) {
@@ -139,7 +151,9 @@ class LoginActivty : AppCompatActivity() {
                     val userMap = hashMapOf(
                         "displayName" to account.displayName,
                         "email" to account.email,
-                        // Add other fields as needed
+                        "latitude" to sharedPreferences.getFloat("latitude", 37.422092F),
+                        "longitude" to sharedPreferences.getFloat("longitude", -122.08392f)
+
                     )
 
                     userDocRef.set(userMap)
@@ -148,17 +162,16 @@ class LoginActivty : AppCompatActivity() {
                             updateUI(account)
                         }
                         .addOnFailureListener { e ->
-                            // Handle failure to add user details
                         }
                 } else {
-                    // Document already exists (user has signed in before)
                     updateUI(account)
                 }
             } else {
-                // Handle failure to check if the document exists
+
             }
         }
     }
+
 
 
 }

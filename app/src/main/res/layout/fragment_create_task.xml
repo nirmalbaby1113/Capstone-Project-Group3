@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -235,6 +236,8 @@
                 android:textColor="@color/white_text"
                 />
 
+
+
             <TextView
                 android:id="@+id/taskAmountTextView"
                 android:layout_width="wrap_content"
@@ -249,6 +252,8 @@
                 android:paddingRight="16dp"
                 android:layout_below="@id/editTextTaskDescription"
                 />
+
+
 
             <TextView
                 android:id="@+id/taskAmountRequired"
@@ -282,6 +287,8 @@
                 android:textColorHint="@color/grey_hint_color"
                 android:textColor="@color/white_text"
                 />
+
+
 
             <TextView
                 android:id="@+id/taskTipTextView"

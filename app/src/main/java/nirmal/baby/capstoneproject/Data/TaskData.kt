@@ -10,8 +10,10 @@ data class TaskData(val title: String,
                     val timeDue: String,
                     val createdBy: String,
                     val status: String,
-                    val acceptedBy: String){
+                    val acceptedBy: String,
+                    val latitude: String,
+                    val longitude: String){
     // Empty constructor required for Firestore deserialization
-    constructor() : this("", "", "", "", "", "", "", "", "","","")
+    constructor() : this("", "", "", "", "", "", "", "", "","","","","")
 }
 

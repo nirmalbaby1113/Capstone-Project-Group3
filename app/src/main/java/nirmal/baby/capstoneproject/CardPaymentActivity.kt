@@ -99,7 +99,7 @@ class CardPaymentActivity : AppCompatActivity() {
             "docs" to docs,
             "dateDue" to dateDue,
             "timeDue" to timeDue,
-            "status" to "In Progress",
+            "status" to "Not Accepted",
             "createdBy" to createdBy//firebaseAuth.currentUser?.uid // Assuming you want to associate the task with the current user
         )
 

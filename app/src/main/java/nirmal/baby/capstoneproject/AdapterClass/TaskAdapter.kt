@@ -1,6 +1,7 @@
 package nirmal.baby.capstoneproject.AdapterClass
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import nirmal.baby.capstoneproject.Fragments.BottomSheetDialogFragment
 import nirmal.baby.capstoneproject.ModelClass.TaskModel
 import nirmal.baby.capstoneproject.R
+import nirmal.baby.capstoneproject.Utils.LocationUtils
 
 class TaskAdapter(private val context: Context, private val fragmentManager: FragmentManager, private val taskListData: List<TaskModel>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
@@ -59,6 +61,10 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
             }
         }
 
+        val distance = LocationUtils.distanceBetweenTwoPoints(taskItem.getLat().toDouble(), taskItem.getLon().toDouble(), 37.4220936, -122.083922)
+        Log.d("TaskAdapter","Distance: $distance, Lat: ${taskItem.getLat().toDouble()} and Lon: ${taskItem.getLon().toDouble()}")
+
+        holder.cardDistance.text = "~$distance KMs"
         holder.moreInfoTextView.setOnClickListener {
             handleMoreInfoButtonCall(taskItem)
         }
@@ -71,6 +77,7 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
         val userNameTextView : TextView = itemView.findViewById(R.id.cardUserName)
         val moreInfoTextView : TextView = itemView.findViewById(R.id.cardMoreInfo)
         val cardEarnings: TextView = itemView.findViewById(R.id.cardEarnings)
+        val cardDistance: TextView = itemView.findViewById(R.id.cardDistance)
     }
 
     private fun handleMoreInfoButtonCall(taskItem: TaskModel){

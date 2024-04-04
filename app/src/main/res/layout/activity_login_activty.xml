@@ -152,8 +152,8 @@
 
     <ImageView
         android:id="@+id/signInWithGoogleImage"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/google_icon"
         android:layout_below="@+id/layoutLoginWith"
         android:layout_centerHorizontal="true"
