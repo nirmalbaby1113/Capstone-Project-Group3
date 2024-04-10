@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import nirmal.baby.capstoneproject.ModelClass.TaskModel
 import nirmal.baby.capstoneproject.R
+import org.w3c.dom.Text
 
 class BottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -54,6 +55,7 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
         val taskTipDialog = view.findViewById<TextView>(R.id.bottomSheetTaskAmtEarned)
         val taskDocsDialog = view.findViewById<TextView>(R.id.bottomSheetTaskDocs)
         val taskInProgressText = view.findViewById<TextView>(R.id.bottomSheetInProgressText)
+        val taskDue = view.findViewById<TextView>(R.id.bottomSheetTaskDue)
 
 
         if (taskItem?.getTaskStatus() == "Accepted"){
@@ -74,6 +76,7 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
         taskDescDialog.text = this.taskItem?.getTaskDesc()
         taskAmtDialog.text = this.taskItem?.getTaskAmt()
         taskDocsDialog.text = this.taskItem?.getTaskDocs()
+        taskDue.text = this.taskItem?.getTaskDue()
 
         if (this.taskItem?.getTaskTip() == "0") {
             taskTipDialog.text = this.taskItem?.getTaskAmt()

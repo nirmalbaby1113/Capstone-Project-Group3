@@ -64,6 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:text="Completed"
                 android:textColor="@color/black_background"
                 android:background="@drawable/round_button_task_history_inactive" />

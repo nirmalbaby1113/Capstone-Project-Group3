@@ -6,7 +6,9 @@ import android.os.Parcelable
 class TaskModel (private var documentId: String, private var taskTitle: String, private var priorityType: String,
                         private var createdBy: String, private var taskDesc: String, private var taskAmt: String,
                             private var taskTip: String, private var taskDocs: String,
-                                private var taskStatus: String, private var taskAcceptedBy: String): Parcelable {
+                                private var taskStatus: String, private var taskAcceptedBy: String,
+                                    private var taskDue: String, private var lat: String,
+                                        private var lon: String): Parcelable {
 
     // Getter and Setter
     fun getTaskStatus(): String {
@@ -47,6 +49,19 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
     fun getTaskDocs(): String{
         return taskDocs
     }
+
+    fun getTaskDue(): String{
+        return taskDue
+    }
+
+    fun getLat(): String{
+        return lat
+    }
+
+    fun getLon(): String{
+        return lon
+    }
+
     fun setTaskTitle(taskTitle: String) {
         this.taskTitle = taskTitle
     }
@@ -70,7 +85,10 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString()?:"",
-        parcel.readString()?: ""
+        parcel.readString()?: "",
+        "",
+        "",
+        ""
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

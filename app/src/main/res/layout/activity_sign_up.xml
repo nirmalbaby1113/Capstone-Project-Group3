@@ -106,7 +106,7 @@
                 android:background="@drawable/edit_text_border"
                 android:textColorHint="@color/grey_hint_color"
                 android:textColor="@color/white_text"
-                android:hint="Password"
+                android:hint="Confirm Password"
                 />
 
             <TextView

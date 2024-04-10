@@ -110,7 +110,7 @@ class HomeFragment : Fragment() {
                     val documentId = document.id
                     val task = document.toObject(TaskData::class.java)
                     val taskModel = TaskModel(documentId,task.title, task.priority,
-                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy)
+                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude)
 
                     //Log.d("FetchTasks", "Doc Id: ${documentId}")
 
