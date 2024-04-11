@@ -24,7 +24,7 @@ class HistoryFragment : Fragment() {
     private lateinit var recyclerViewInProgress: RecyclerView
     private lateinit var progressBarLayout: LinearLayout
     private var inProgressTaskArrayList: ArrayList<TaskModel> = ArrayList()
-    private val MAX_RETRIES = 3
+    private val MAX_RETRIES = 4
     private var retryCount = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +41,6 @@ class HistoryFragment : Fragment() {
             // Update UI with the fetched tasks
             updateRecyclerView()
         }
-
-
         return view
     }
 
@@ -55,8 +53,6 @@ class HistoryFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         inProgressTaskRecyclerView.adapter = inProgressTaskAdapter
     }
-
-
 
     private fun fetchTasks(callback: () -> Unit) {
         progressBarLayout.visibility = View.VISIBLE
@@ -77,7 +73,6 @@ class HistoryFragment : Fragment() {
                     val taskModel = TaskModel(documentId,task.title, task.priority,
                         task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude, task.ratings)
 
-                    // Add the task to the appropriate list based on priority
                     if ((taskModel.getTaskStatus() == "Accepted" || taskModel.getTaskStatus() == "Completed") && taskModel.getTaskAcceptedBy() == FirebaseAuth.getInstance().currentUser?.uid.toString()){
                         inProgressTaskArrayList.add(taskModel)
                     }
@@ -90,10 +85,9 @@ class HistoryFragment : Fragment() {
                 Log.e("FirebaseFetch", "Error fetching tasks:")
                 // Retry logic
                 if (retryCount < MAX_RETRIES) {
-                    // Retry the operation after a delay
                     Handler(Looper.getMainLooper()).postDelayed({
                         fetchTasks(callback)
-                    }, 2000) // Retry after a 2-second delay (you can adjust the delay as needed)
+                    }, 2000)
                     retryCount++
                 }
             }

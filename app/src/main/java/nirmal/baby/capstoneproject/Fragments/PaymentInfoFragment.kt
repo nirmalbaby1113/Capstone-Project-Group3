@@ -26,6 +26,7 @@ class PaymentInfoFragment: Fragment() {
     private lateinit var btnVerify: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var licenseNumberField: EditText
+    private lateinit var licenseNumberTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +38,10 @@ class PaymentInfoFragment: Fragment() {
         btnVerify = view.findViewById(R.id.btnVerifyLicense)
         progressBar = view.findViewById(R.id.loadingProgressBarLicenseVerification)
         licenseNumberField = view.findViewById(R.id.editTextLicenseNumber)
+        licenseNumberTextView = view.findViewById(R.id.licenseNumberTextView)
 
         initialVisibility(progressBar, licenseStatus, btnVerify, licenseNumberField)
-        fetchData(btnVerify, progressBar, licenseStatus, licenseNumberField, view)
+        fetchData(btnVerify, progressBar, licenseStatus, licenseNumberField, licenseNumberTextView, view)
 
         return view
     }
@@ -49,10 +51,11 @@ class PaymentInfoFragment: Fragment() {
         licenseStatus.visibility = View.GONE
         btnVerify.visibility = View.GONE
         licenseNumberField.visibility = View.GONE
+        licenseNumberTextView.visibility =View.GONE
     }
 
     // Function to fetch data from Firestore
-    private fun fetchData(btnVerify:Button, progressBar:ProgressBar, licenseStatus:TextView, licenseNumberField:EditText, view: View) {
+    private fun fetchData(btnVerify:Button, progressBar:ProgressBar, licenseStatus:TextView, licenseNumberField:EditText, licenseNumberTextView:TextView, view: View) {
         // Get current user ID
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
@@ -89,17 +92,20 @@ class PaymentInfoFragment: Fragment() {
                             licenseStatus.visibility = View.VISIBLE
                             btnVerify.visibility = View.VISIBLE
                             licenseNumberField.visibility = View.VISIBLE
+                            licenseNumberTextView.visibility = View.VISIBLE
                         }?.addOnFailureListener { exception ->
                             progressBar.visibility = View.GONE
                             licenseStatus.visibility = View.VISIBLE
                             btnVerify.visibility = View.VISIBLE
                             licenseNumberField.visibility = View.VISIBLE
+                            licenseNumberTextView.visibility = View.VISIBLE
                             btnVerify.setOnClickListener {
                                 progressBar.visibility = View.VISIBLE
                                 licenseStatus.visibility = View.GONE
                                 btnVerify.visibility = View.GONE
                                 licenseNumberField.visibility = View.GONE
-                                fetchData(btnVerify, progressBar, licenseStatus, licenseNumberField, view)
+                                licenseNumberTextView.visibility = View.GONE
+                                fetchData(btnVerify, progressBar, licenseStatus, licenseNumberField, licenseNumberTextView, view)
                             }
                         }
                     }
@@ -132,17 +138,20 @@ class PaymentInfoFragment: Fragment() {
                             licenseStatus.visibility = View.VISIBLE
                             btnVerify.visibility = View.VISIBLE
                             licenseNumberField.visibility = View.VISIBLE
+                            licenseNumberTextView.visibility = View.VISIBLE
                         }?.addOnFailureListener { exception ->
                             progressBar.visibility = View.GONE
                             licenseStatus.visibility = View.VISIBLE
                             btnVerify.visibility = View.VISIBLE
                             licenseNumberField.visibility = View.VISIBLE
+                            licenseNumberTextView.visibility = View.VISIBLE
                             btnVerify.setOnClickListener {
                                 progressBar.visibility = View.VISIBLE
                                 licenseStatus.visibility = View.GONE
                                 btnVerify.visibility = View.GONE
                                 licenseNumberField.visibility = View.GONE
-                                fetchData(btnVerify, progressBar, licenseStatus, licenseNumberField, view)
+                                licenseNumberTextView.visibility = View.GONE
+                                fetchData(btnVerify, progressBar, licenseStatus, licenseNumberField, licenseNumberTextView, view)
                             }
                         }
                     }

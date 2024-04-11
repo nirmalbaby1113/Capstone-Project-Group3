@@ -32,7 +32,6 @@ import org.w3c.dom.Text
 class BottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var taskItem: TaskModel? = null
-    private val PICK_IMAGE_REQUEST = 1
     private lateinit var imageUri: Uri
     private lateinit var popupImageView: ImageView
     private lateinit var okButton: Button
@@ -97,8 +96,6 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
             taskTipDialog.text = this.taskItem?.getTaskTip()
         }
 
- 
-
         closeButton.setOnClickListener {
             dismiss()
         }
@@ -122,10 +119,7 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
         } else {
             acceptButton.setOnClickListener {
 
-                Log.d("Firestore", "Before updating")
-
                 taskItem?.let {
-                    Log.d("Firestore", "Start of let")
                     val firestore = FirebaseFirestore.getInstance()
                     val documentId = taskItem?.getDocumentId() // Replace with the actual method to get the document ID
 
@@ -145,7 +139,6 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
                             .update(updates)
                             .addOnSuccessListener {
                                 // Update successful
-                                Log.d("Firestore", "DocumentSnapshot successfully updated!")
                                 dismiss()
                             }
                             .addOnFailureListener { e ->
@@ -167,7 +160,6 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.pop_layout_upload_image)
 
-
         // Customize your popup view components (e.g., buttons, image views, etc.)
         uploadButton = dialog.findViewById<Button>(R.id.btnUploadImage)
         submitButton = dialog.findViewById<Button>(R.id.btnSubmitImage)
@@ -181,28 +173,13 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         // Set click listener for the upload button (you need to implement image upload logic here)
         uploadButton.setOnClickListener {
-            // Implement your image upload logic here
-            // You can use libraries like Firebase Storage to upload images
-            // Example: Upload image to Firebase Storage
-            // val storageRef = FirebaseStorage.getInstance().reference
-            // val imageRef = storageRef.child("images/${System.currentTimeMillis()}.jpg")
-            // val uploadTask = imageRef.putFile(/* your image URI */)
             openImageChooser()
 
         }
 
         // Set click listener for the submit button (you need to implement submission logic here)
         submitButton.setOnClickListener {
-            // Implement your submission logic here
-            // You can use Firestore to save the image information along with other details
-            // Example: Save image information to Firestore
-            // val firestore = FirebaseFirestore.getInstance()
-            // val documentId = taskItem?.getDocumentId()
-            // firestore.collection("tasks").document(documentId)
-            //     .update("imageUrl", /* your image URL */)
-
             addFeedback(documentId, dialog)
-
         }
 
         closePop.setOnClickListener {
@@ -217,20 +194,12 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
             type = "image/*"
             action = Intent.ACTION_GET_CONTENT
         }
-
-
         // Launch the image chooser using the launcher
         imageChooseLauncher.launch(Intent.createChooser(intent, "Select Picture"))
     }
 
     private fun addFeedback(documentId: String, dialog: Dialog){
-        Log.d("BottomSheet","Doc ID: $documentId")
-
-
         val userRef = firestore.collection("tasks").document(documentId)
-
-        Log.d("BottomSheet","Doc UserRef: $userRef")
-
         userRef.update(
             mapOf(
                 "ratings" to ratingsStars.rating.toString(),
@@ -260,7 +229,6 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
             infoTextViewProof.visibility = View.GONE
             ratingsStars.visibility = View.GONE
             feedbackTextView.visibility = View.GONE
-
 
             okButton.text = "Close"
             completedTextView.text = "Please Try Again..."
