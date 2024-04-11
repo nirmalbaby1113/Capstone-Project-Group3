@@ -50,7 +50,7 @@ class CreatedTaskListFragment : Fragment() {
     private fun recyclerViewDataInitializing(
         createdTaskListRecyclerView: RecyclerView
     ) {
-        val createdTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, createdTaskListArrayList)
+        val createdTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, createdTaskListArrayList, false, false)
 
         createdTaskListRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -78,7 +78,7 @@ class CreatedTaskListFragment : Fragment() {
                     val documentId = document.id
                     val task = document.toObject(TaskData::class.java)
                     val taskModel = TaskModel(documentId,task.title, task.priority,
-                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude)
+                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude, task.ratings)
 
                     Log.d("FetchTasks", "Doc Id: ${documentId}")
 

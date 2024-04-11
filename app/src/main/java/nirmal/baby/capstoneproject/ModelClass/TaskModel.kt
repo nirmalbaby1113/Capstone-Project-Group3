@@ -8,7 +8,7 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
                             private var taskTip: String, private var taskDocs: String,
                                 private var taskStatus: String, private var taskAcceptedBy: String,
                                     private var taskDue: String, private var lat: String,
-                                        private var lon: String): Parcelable {
+                                        private var lon: String, private var ratings: String): Parcelable {
 
     // Getter and Setter
     fun getTaskStatus(): String {
@@ -62,6 +62,10 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
         return lon
     }
 
+    fun getRatings(): String{
+        return ratings
+    }
+
     fun setTaskTitle(taskTitle: String) {
         this.taskTitle = taskTitle
     }
@@ -86,6 +90,7 @@ class TaskModel (private var documentId: String, private var taskTitle: String, 
         parcel.readString() ?: "",
         parcel.readString()?:"",
         parcel.readString()?: "",
+        "",
         "",
         "",
         ""

@@ -5,14 +5,102 @@
     android:background="@color/black_background"
     android:padding="5dp">
 
-    <TextView
+    <ProgressBar
+        android:id="@+id/loadingProgressBarLicenseVerification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Payment methods"
-        android:textSize="24sp"
-        android:textColor="@color/white_text"
-        android:fontFamily="@font/poppinsmedium"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/blue_primary" />
+
+    <RelativeLayout
+        android:id="@+id/layoutLicenseUI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/licenseNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Driving License Number*"
+            android:textColor="@color/white_text"
+            android:textSize="16sp"
+            android:gravity="end"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppinslight"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            />
+
+        <TextView
+            android:id="@+id/licenseNumberTextViewRequired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Required"
+            android:textColor="@color/red_background"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppinslight"
+            android:layout_toEndOf="@+id/licenseNumberTextView"
+            android:layout_alignBaseline="@+id/licenseNumberTextView"
+            android:visibility="gone"
+            />
+        <EditText
+            android:id="@+id/editTextLicenseNumber"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/licenseNumberTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="7dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/edit_text_border"
+            android:textColorHint="@color/hint_color_opaque"
+            android:textColor="@color/white_text"
+            android:hint="A1234-56789-01111"
         />
+
+
+        <TextView
+            android:id="@+id/licenseVerificationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: Verification Incomplete"
+            android:textColor="@color/grey_hint_color"
+            android:textSize="12sp"
+            android:gravity="end"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/poppinslight"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_below="@+id/editTextLicenseNumber"
+            android:layout_centerHorizontal="true"
+            />
+
+        <Button
+            android:id="@+id/btnVerifyLicense"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Verify"
+            android:layout_below="@+id/licenseVerificationTextView"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="28dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppinsmedium"
+            android:background="@drawable/round_button_blue"
+            android:textColor="@color/black_background"
+            android:padding="10dp"
+            />
+
+
+    </RelativeLayout>
+
+
+
+    
 
 
 </RelativeLayout>

@@ -76,8 +76,8 @@ class HomeFragment : Fragment() {
         priorityTaskRecyclerView: RecyclerView,
         generalTaskRecyclerView: RecyclerView
     ) {
-        val priorityTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, priorityTaskArrayList)
-        val generalTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, generalTaskArrayList)
+        val priorityTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, priorityTaskArrayList,false,true)
+        val generalTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, generalTaskArrayList,false,true)
 
         priorityTaskRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -110,7 +110,7 @@ class HomeFragment : Fragment() {
                     val documentId = document.id
                     val task = document.toObject(TaskData::class.java)
                     val taskModel = TaskModel(documentId,task.title, task.priority,
-                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude)
+                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude, task.ratings)
 
                     //Log.d("FetchTasks", "Doc Id: ${documentId}")
 
@@ -141,7 +141,7 @@ class HomeFragment : Fragment() {
 
 
                 }
-                val generalTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, generalTaskArrayList)
+                val generalTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, generalTaskArrayList,false, true)
                 generalTaskRecyclerView.adapter = generalTaskAdapter
                 // Log the size of the updated list
                 Log.d("HomeFragment", "Updated task list size: ${priorityTaskArrayList.size}")

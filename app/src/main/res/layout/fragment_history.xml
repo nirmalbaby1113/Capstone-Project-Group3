@@ -40,37 +40,6 @@
             android:background="@android:color/white"
             android:layout_marginTop="7dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <Button
-                android:id="@+id/btnInProgress"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="In Progress"
-                android:textColor="@color/black_background"
-                android:background="@drawable/round_button_task_history_active" />
-
-            <Space
-                android:layout_width="18dp"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/btnCompleted"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:text="Completed"
-                android:textColor="@color/black_background"
-                android:background="@drawable/round_button_task_history_inactive" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout

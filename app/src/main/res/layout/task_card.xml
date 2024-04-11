@@ -74,16 +74,60 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             >
+            <LinearLayout
 
-            <TextView
-                android:id="@+id/cardUserName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nirmal Baby"
-                android:layout_weight="1"
-                android:fontFamily="@font/poppinslight"
-                android:textColor="@color/white_text"
-                />
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/cardUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nirmal Baby"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppinslight"
+                    android:textColor="@color/white_text"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/layoutRatings"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/rating_star"
+                        android:layout_marginTop="1dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/cardUserRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="5"
+                        android:gravity="center"
+                        android:layout_marginStart="3dp"
+                        android:textSize="12sp"
+                        android:layout_marginTop="0.47dp"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/white_text"
+                        />
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/cardDistance"
@@ -110,6 +154,19 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/cardTxtViewTaskStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="end"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:fontFamily="@font/poppinssemibold"
+            android:textColor="@color/blue_primary"
+            />
 
 
 

@@ -17,7 +17,7 @@ import nirmal.baby.capstoneproject.ModelClass.TaskModel
 import nirmal.baby.capstoneproject.R
 import nirmal.baby.capstoneproject.Utils.LocationUtils
 
-class TaskAdapter(private val context: Context, private val fragmentManager: FragmentManager, private val taskListData: List<TaskModel>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+class TaskAdapter(private val context: Context, private val fragmentManager: FragmentManager, private val taskListData: List<TaskModel>, private val isHistoryFragment: Boolean, val isHomeFragment: Boolean) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -34,6 +34,31 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
         holder.priorityTextView.text = taskItem.getPriorityType()
         holder.taskTitleNameTextView.text = taskItem.getTaskTitle()
         holder.userNameTextView.text = taskItem.getUserName()
+        Log.d("TaskAdapter","isHistory: $isHistoryFragment")
+
+
+        if (isHomeFragment){
+            holder.cardRatingText.text = taskItem.getRatings()
+            holder.layoutRating.visibility = View.VISIBLE
+        } else {
+            holder.layoutRating.visibility = View.GONE
+        }
+
+        if (isHistoryFragment){
+            if (taskItem.getTaskStatus() == "Accepted"){
+                val textColor = ContextCompat.getColor(context,R.color.orange_medium_priority)
+                holder.cardTaskStatus.text = "IN PROGRESS"
+                holder.cardTaskStatus.setTextColor(textColor)
+                holder.cardTaskStatus.visibility = View.VISIBLE
+            }else if (taskItem.getTaskStatus() == "Completed"){
+                val textColor = ContextCompat.getColor(context,R.color.green_low_priority)
+                holder.cardTaskStatus.text = "COMPLETED"
+                holder.cardTaskStatus.setTextColor(textColor)
+                holder.cardTaskStatus.visibility = View.VISIBLE
+            }
+        }else{
+            holder.cardTaskStatus.visibility = View.GONE
+        }
 
         if (taskItem.getTaskTip() == "0"){
             holder.cardEarnings.text = "Earn : $${taskItem.getTaskAmt()}"
@@ -62,7 +87,7 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
         }
 
         val distance = LocationUtils.distanceBetweenTwoPoints(taskItem.getLat().toDouble(), taskItem.getLon().toDouble(), 37.4220936, -122.083922)
-        Log.d("TaskAdapter","Distance: $distance, Lat: ${taskItem.getLat().toDouble()} and Lon: ${taskItem.getLon().toDouble()}")
+        //Log.d("TaskAdapter","Distance: $distance, Lat: ${taskItem.getLat().toDouble()} and Lon: ${taskItem.getLon().toDouble()}")
 
         holder.cardDistance.text = "~$distance KMs"
         holder.moreInfoTextView.setOnClickListener {
@@ -78,6 +103,9 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
         val moreInfoTextView : TextView = itemView.findViewById(R.id.cardMoreInfo)
         val cardEarnings: TextView = itemView.findViewById(R.id.cardEarnings)
         val cardDistance: TextView = itemView.findViewById(R.id.cardDistance)
+        val cardTaskStatus: TextView = itemView.findViewById(R.id.cardTxtViewTaskStatus)
+        val layoutRating: LinearLayout = itemView.findViewById(R.id.layoutRatings)
+        val cardRatingText: TextView = itemView.findViewById(R.id.cardUserRating)
     }
 
     private fun handleMoreInfoButtonCall(taskItem: TaskModel){

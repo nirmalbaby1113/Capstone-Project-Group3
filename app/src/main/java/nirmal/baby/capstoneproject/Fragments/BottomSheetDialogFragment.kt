@@ -3,6 +3,7 @@ package nirmal.baby.capstoneproject.Fragments
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.media.Rating
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,13 +15,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import nirmal.baby.capstoneproject.MainActivity
 import nirmal.baby.capstoneproject.ModelClass.TaskModel
 import nirmal.baby.capstoneproject.R
 import org.w3c.dom.Text
@@ -31,7 +35,16 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var imageUri: Uri
     private lateinit var popupImageView: ImageView
+    private lateinit var okButton: Button
+    private lateinit var uploadButton: Button
+    private lateinit var submitButton: Button
+    private lateinit var closePop: TextView
+    private lateinit var completedTextView: TextView
+    private lateinit var infoTextViewProof: TextView
+    private lateinit var feedbackTextView: TextView
+    private lateinit var ratingsStars: RatingBar
     private lateinit var imageChooseLauncher: ActivityResultLauncher<Intent>
+    private val firestore = FirebaseFirestore.getInstance()
 
     fun setTaskItem(taskItem: TaskModel) {
         this.taskItem = taskItem
@@ -103,7 +116,8 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         if (taskItem?.getTaskStatus() == "Accepted"){
             acceptButton.setOnClickListener {
-                showImageUploadPopup(view)
+
+                showImageUploadPopup(view, taskItem!!.getDocumentId())
             }
         } else {
             acceptButton.setOnClickListener {
@@ -149,16 +163,21 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
         return view
     }
 
-    private fun showImageUploadPopup(view: View) {
+    private fun showImageUploadPopup(view: View, documentId: String) {
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.pop_layout_upload_image)
 
 
         // Customize your popup view components (e.g., buttons, image views, etc.)
-        val uploadButton = dialog.findViewById<Button>(R.id.btnUploadImage)
-        val submitButton = dialog.findViewById<Button>(R.id.btnSubmitImage)
-        val closePop = dialog.findViewById<TextView>(R.id.imageUploadPopupClose)
+        uploadButton = dialog.findViewById<Button>(R.id.btnUploadImage)
+        submitButton = dialog.findViewById<Button>(R.id.btnSubmitImage)
+        closePop = dialog.findViewById<TextView>(R.id.imageUploadPopupClose)
         popupImageView = dialog.findViewById(R.id.popupImageView)
+        okButton = dialog.findViewById(R.id.btnOK)
+        completedTextView = dialog.findViewById(R.id.txtViewConformation)
+        infoTextViewProof = dialog.findViewById(R.id.txtViewProof)
+        ratingsStars = dialog.findViewById(R.id.ratingBar)
+        feedbackTextView = dialog.findViewById(R.id.txtViewFeedback)
 
         // Set click listener for the upload button (you need to implement image upload logic here)
         uploadButton.setOnClickListener {
@@ -182,6 +201,8 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
             // firestore.collection("tasks").document(documentId)
             //     .update("imageUrl", /* your image URL */)
 
+            addFeedback(documentId, dialog)
+
         }
 
         closePop.setOnClickListener {
@@ -200,6 +221,61 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         // Launch the image chooser using the launcher
         imageChooseLauncher.launch(Intent.createChooser(intent, "Select Picture"))
+    }
+
+    private fun addFeedback(documentId: String, dialog: Dialog){
+        Log.d("BottomSheet","Doc ID: $documentId")
+
+
+        val userRef = firestore.collection("tasks").document(documentId)
+
+        Log.d("BottomSheet","Doc UserRef: $userRef")
+
+        userRef.update(
+            mapOf(
+                "ratings" to ratingsStars.rating.toString(),
+                "status" to "Completed"
+            )
+        ).addOnSuccessListener {
+            uploadButton.visibility = View.GONE
+            submitButton.visibility = View.GONE
+            popupImageView.visibility = View.GONE
+            infoTextViewProof.visibility = View.GONE
+            ratingsStars.visibility = View.GONE
+            feedbackTextView.visibility = View.GONE
+
+            okButton.visibility = View.VISIBLE
+            completedTextView.visibility = View.VISIBLE
+
+            okButton.setOnClickListener {
+                val intent: Intent = Intent(requireActivity(), MainActivity::class.java)
+                startActivity(intent)
+            }
+
+        }.addOnFailureListener {
+
+            uploadButton.visibility = View.GONE
+            submitButton.visibility = View.GONE
+            popupImageView.visibility = View.GONE
+            infoTextViewProof.visibility = View.GONE
+            ratingsStars.visibility = View.GONE
+            feedbackTextView.visibility = View.GONE
+
+
+            okButton.text = "Close"
+            completedTextView.text = "Please Try Again..."
+            okButton.visibility = View.VISIBLE
+            completedTextView.visibility = View.VISIBLE
+
+            okButton.setOnClickListener {
+             dialog.dismiss()
+            }
+        }
+
+    }
+
+    private fun elementsModifyAfterSubmit(){
+
     }
 
 }
