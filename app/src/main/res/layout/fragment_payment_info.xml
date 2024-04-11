@@ -60,7 +60,7 @@
             android:textColorHint="@color/hint_color_opaque"
             android:textColor="@color/white_text"
             android:hint="A1234-56789-01111"
-        />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,7 +108,7 @@
 
 
 
-    
+
 
 
 </RelativeLayout>
