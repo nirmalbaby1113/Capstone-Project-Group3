@@ -62,38 +62,46 @@
             android:hint="A1234-56789-01111"
             />
 
-
-        <TextView
-            android:id="@+id/licenseVerificationTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status: Verification Incomplete"
-            android:textColor="@color/grey_hint_color"
-            android:textSize="12sp"
-            android:gravity="end"
-            android:layout_marginTop="28dp"
-            android:fontFamily="@font/poppinslight"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:layout_below="@+id/editTextLicenseNumber"
-            android:layout_centerHorizontal="true"
-            />
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <Button
-            android:id="@+id/btnVerifyLicense"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Verify"
-            android:layout_below="@+id/licenseVerificationTextView"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="28dp"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppinsmedium"
-            android:background="@drawable/round_button_blue"
-            android:textColor="@color/black_background"
-            android:padding="10dp"
-            />
+            <TextView
+                android:id="@+id/licenseVerificationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status: Verification Incomplete"
+                android:textColor="@color/grey_hint_color"
+                android:textSize="12sp"
+                android:gravity="end"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/poppinslight"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                />
+
+            <Button
+                android:id="@+id/btnVerifyLicense"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Verify"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="28dp"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppinsmedium"
+                android:background="@drawable/round_button_blue"
+                android:textColor="@color/black_background"
+                android:padding="10dp"
+                />
+
+        </LinearLayout>
+
+
+
 
 
     </RelativeLayout>
