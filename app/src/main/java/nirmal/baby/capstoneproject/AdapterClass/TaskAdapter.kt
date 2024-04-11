@@ -34,15 +34,6 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
         holder.priorityTextView.text = taskItem.getPriorityType()
         holder.taskTitleNameTextView.text = taskItem.getTaskTitle()
         holder.userNameTextView.text = taskItem.getUserName()
-        Log.d("TaskAdapter","isHistory: $isHistoryFragment")
-
-
-        if (isHomeFragment){
-            holder.cardRatingText.text = taskItem.getRatings()
-            holder.layoutRating.visibility = View.VISIBLE
-        } else {
-            holder.layoutRating.visibility = View.GONE
-        }
 
         if (isHistoryFragment){
             if (taskItem.getTaskStatus() == "Accepted"){
@@ -58,6 +49,13 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
             }
         }else{
             holder.cardTaskStatus.visibility = View.GONE
+        }
+
+        if (isHomeFragment){
+            holder.cardRatingText.text = taskItem.getRatings()
+            holder.layoutRating.visibility = View.VISIBLE
+        } else {
+            holder.layoutRating.visibility = View.GONE
         }
 
         if (taskItem.getTaskTip() == "0"){
@@ -87,8 +85,6 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
         }
 
         val distance = LocationUtils.distanceBetweenTwoPoints(taskItem.getLat().toDouble(), taskItem.getLon().toDouble(), 37.4220936, -122.083922)
-        //Log.d("TaskAdapter","Distance: $distance, Lat: ${taskItem.getLat().toDouble()} and Lon: ${taskItem.getLon().toDouble()}")
-
         holder.cardDistance.text = "~$distance KMs"
         holder.moreInfoTextView.setOnClickListener {
             handleMoreInfoButtonCall(taskItem)

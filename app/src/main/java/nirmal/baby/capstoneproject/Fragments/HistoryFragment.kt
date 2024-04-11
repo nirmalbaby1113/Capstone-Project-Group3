@@ -62,42 +62,27 @@ class HistoryFragment : Fragment() {
         progressBarLayout.visibility = View.VISIBLE
         recyclerViewInProgress.visibility = View.GONE
         val firestore = FirebaseFirestore.getInstance()
-
-        // Reference to the "tasks" collection
         val tasksCollection = firestore.collection("tasks")
 
-        // Query to get all documents in the "tasks" collection
         tasksCollection.get()
             .addOnSuccessListener { documents ->
                 // Clear the existing list
                 inProgressTaskArrayList.clear()
                 progressBarLayout.visibility = View.GONE
                 recyclerViewInProgress.visibility = View.VISIBLE
-                // Iterate through documents and convert them to TaskModel objects
+
                 for (document in documents) {
                     val documentId = document.id
                     val task = document.toObject(TaskData::class.java)
                     val taskModel = TaskModel(documentId,task.title, task.priority,
                         task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude, task.ratings)
 
-                    Log.d("FetchTasks", "Doc Id: ${documentId}")
-
                     // Add the task to the appropriate list based on priority
                     if ((taskModel.getTaskStatus() == "Accepted" || taskModel.getTaskStatus() == "Completed") && taskModel.getTaskAcceptedBy() == FirebaseAuth.getInstance().currentUser?.uid.toString()){
-                        Log.d("FetchTasks", "If latest")
                         inProgressTaskArrayList.add(taskModel)
-                    }else{
-                        Log.d("FetchTasks", "Else latest Check: Status: ${taskModel.getTaskStatus()}, Accepted: ${taskModel.getTaskAcceptedBy()}, Title : ${taskModel.getTaskTitle()}")
                     }
-
-
                 }
 
-
-                // Log the size of the updated list
-                Log.d("FetchTasks", "Updated task list size: ${inProgressTaskArrayList.size}")
-
-                // Invoke the callback to update the UI
                 callback.invoke()
             }
             .addOnFailureListener {
@@ -110,9 +95,6 @@ class HistoryFragment : Fragment() {
                         fetchTasks(callback)
                     }, 2000) // Retry after a 2-second delay (you can adjust the delay as needed)
                     retryCount++
-                } else {
-                    // Maximum retries reached, you might want to display an error message or take appropriate action
-                    Log.e("FirebaseFetch", "Maximum retries reached.")
                 }
             }
     }
@@ -120,7 +102,6 @@ class HistoryFragment : Fragment() {
     private fun updateRecyclerView() {
         // Notify the adapter that the data set has changed
         recyclerViewInProgress.adapter?.notifyDataSetChanged()
-
         Log.d("RecyclerViewUpdate", "RecyclerView updated")
     }
 
