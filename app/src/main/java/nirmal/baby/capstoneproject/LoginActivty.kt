@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -140,6 +141,7 @@ class LoginActivty : AppCompatActivity() {
     private fun storeUserInFirestore(account: GoogleSignInAccount) {
         val db = FirebaseFirestore.getInstance()
         val firebaseUser = FirebaseAuth.getInstance().currentUser
+        Log.d("LoginActivity","Fb ID: ${firebaseUser?.uid}")
         val uid = account.id ?: firebaseUser?.uid ?: ""
         val userDocRef = db.collection("users").document(uid)
         sharedPreferences = getSharedPreferences("LocationPrefs", Context.MODE_PRIVATE)

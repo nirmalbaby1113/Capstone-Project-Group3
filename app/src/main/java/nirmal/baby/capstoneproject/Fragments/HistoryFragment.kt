@@ -21,8 +21,6 @@ import nirmal.baby.capstoneproject.R
 
 class HistoryFragment : Fragment() {
 
-    private lateinit var btnInProgress: Button
-    private lateinit var btnCompleted: Button
     private lateinit var recyclerViewInProgress: RecyclerView
     private lateinit var progressBarLayout: LinearLayout
     private var inProgressTaskArrayList: ArrayList<TaskModel> = ArrayList()
@@ -35,8 +33,6 @@ class HistoryFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_history, container, false)
 
-        btnInProgress = view.findViewById(R.id.btnInProgress)
-        btnCompleted = view.findViewById(R.id.btnCompleted)
         recyclerViewInProgress = view.findViewById(R.id.recyclerViewTaskHistoryInProgress)
         progressBarLayout = view.findViewById(R.id.progressBarLinearLayoutTaskHistory)
 
@@ -46,15 +42,6 @@ class HistoryFragment : Fragment() {
             updateRecyclerView()
         }
 
-        btnInProgress.setOnClickListener {
-            // Handle the click for the "In Progress" button
-            updateButtonBackground(true)
-        }
-
-     /*   btnCompleted.setOnClickListener {
-            // Handle the click for the "Completed" button
-            updateButtonBackground(false)
-        }*/
 
         return view
     }
@@ -62,23 +49,14 @@ class HistoryFragment : Fragment() {
     private fun recyclerViewDataInitializing(
         inProgressTaskRecyclerView: RecyclerView
     ) {
-        val inProgressTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, inProgressTaskArrayList)
+        val inProgressTaskAdapter = TaskAdapter(requireContext(), childFragmentManager, inProgressTaskArrayList, true, false)
 
         inProgressTaskRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         inProgressTaskRecyclerView.adapter = inProgressTaskAdapter
     }
 
-    private fun updateButtonBackground(isInProgress: Boolean) {
-        // Update the background of buttons based on the click
-        if (isInProgress) {
-            btnInProgress.setBackgroundResource(R.drawable.round_button_task_history_active)
-            btnCompleted.setBackgroundResource(R.drawable.round_button_task_history_inactive)
-        } else {
-            btnCompleted.setBackgroundResource(R.drawable.round_button_task_history_active)
-            btnInProgress.setBackgroundResource(R.drawable.round_button_task_history_inactive)
-        }
-    }
+
 
     private fun fetchTasks(callback: () -> Unit) {
         progressBarLayout.visibility = View.VISIBLE
@@ -100,12 +78,12 @@ class HistoryFragment : Fragment() {
                     val documentId = document.id
                     val task = document.toObject(TaskData::class.java)
                     val taskModel = TaskModel(documentId,task.title, task.priority,
-                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude)
+                        task.createdBy, task.description, task.amount, task.tip, task.docs, task.status, task.acceptedBy, task.dateDue, task.latitude, task.longitude, task.ratings)
 
                     Log.d("FetchTasks", "Doc Id: ${documentId}")
 
                     // Add the task to the appropriate list based on priority
-                    if (taskModel.getTaskStatus() == "Accepted" && taskModel.getTaskAcceptedBy() == FirebaseAuth.getInstance().currentUser?.uid.toString()){
+                    if ((taskModel.getTaskStatus() == "Accepted" || taskModel.getTaskStatus() == "Completed") && taskModel.getTaskAcceptedBy() == FirebaseAuth.getInstance().currentUser?.uid.toString()){
                         Log.d("FetchTasks", "If latest")
                         inProgressTaskArrayList.add(taskModel)
                     }else{
