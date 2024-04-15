@@ -63,6 +63,8 @@ class CreatedTaskListFragment : Fragment() {
         recyclerViewTaskList.visibility = View.GONE
         val firestore = FirebaseFirestore.getInstance()
 
+
+
         // Reference to the "tasks" collection
         val tasksCollection = firestore.collection("tasks")
 

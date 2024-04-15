@@ -84,8 +84,18 @@ class TaskAdapter(private val context: Context, private val fragmentManager: Fra
             }
         }
 
-        val distance = LocationUtils.distanceBetweenTwoPoints(taskItem.getLat().toDouble(), taskItem.getLon().toDouble(), 37.4220936, -122.083922)
-        holder.cardDistance.text = "~$distance KMs"
+
+        if (taskItem.getLon().isEmpty() || taskItem.getLat().isEmpty()){
+            val distance = LocationUtils.distanceBetweenTwoPoints(37.554828, -122.231649, 37.4220936, -122.083922)
+            holder.cardDistance.text = "~$distance KMs"
+        }else{
+            val distance = LocationUtils.distanceBetweenTwoPoints(taskItem.getLat().toDouble(), taskItem.getLon().toDouble(), 37.4220936, -122.083922)
+            holder.cardDistance.text = "~$distance KMs"
+        }
+
+
+
+
         holder.moreInfoTextView.setOnClickListener {
             handleMoreInfoButtonCall(taskItem)
         }

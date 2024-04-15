@@ -3,6 +3,8 @@ package nirmal.baby.capstoneproject.Fragments
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +29,7 @@ class PaymentInfoFragment: Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var licenseNumberField: EditText
     private lateinit var licenseNumberTextView: TextView
+    private var isFormatting = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +43,7 @@ class PaymentInfoFragment: Fragment() {
         licenseNumberField = view.findViewById(R.id.editTextLicenseNumber)
         licenseNumberTextView = view.findViewById(R.id.licenseNumberTextView)
 
+        licenseNumberField.addTextChangedListener(watcher)
         initialVisibility(progressBar, licenseStatus, btnVerify, licenseNumberField)
         fetchData(btnVerify, progressBar, licenseStatus, licenseNumberField, licenseNumberTextView, view)
 
@@ -75,18 +79,20 @@ class PaymentInfoFragment: Fragment() {
                             val verificationStatus = documentSnapshot.getBoolean("verification")
                             val licenseNo = documentSnapshot.getString("licenseNumber")
 
-                            if (licenseNo == null) {
-                                Log.d("paymentInfo","False")
-                                btnVerify.isEnabled = true
-                                btnVerify.setBackgroundResource(R.drawable.round_button_task_history_active)
-                                btnVerify.setOnClickListener {
-                                    addLicenseNumberToFireStore(view)
+                            if (licenseNo != null) {
+                                if (licenseNo.isEmpty()) {
+                                    Log.d("paymentInfo","False")
+                                    btnVerify.isEnabled = true
+                                    btnVerify.setBackgroundResource(R.drawable.round_button_task_history_active)
+                                    btnVerify.setOnClickListener {
+                                        addLicenseNumberToFireStore(view)
+                                    }
+                                } else {
+                                    Log.d("paymentInfo","True")
+                                    btnVerify.isEnabled = false
+                                    licenseStatus.text = "Status: Verification InProgress"
+                                    btnVerify.setBackgroundResource(R.drawable.round_button_task_history_inactive)
                                 }
-                            } else {
-                                Log.d("paymentInfo","True")
-                                btnVerify.isEnabled = false
-                                licenseStatus.text = "Status: Verification InProgress"
-                                btnVerify.setBackgroundResource(R.drawable.round_button_task_history_inactive)
                             }
                             progressBar.visibility = View.GONE
                             licenseStatus.visibility = View.VISIBLE
@@ -120,18 +126,20 @@ class PaymentInfoFragment: Fragment() {
                         userRef?.get()?.addOnSuccessListener { documentSnapshot ->
                             val verificationStatus = documentSnapshot.getBoolean("verification")
                             val licenseNo = documentSnapshot.getString("licenseNumber")
-                            if (licenseNo == null) {
-                                Log.d("paymentInfo","False")
-                                btnVerify.isEnabled = true
-                                btnVerify.setBackgroundResource(R.drawable.round_button_task_history_active)
-                                btnVerify.setOnClickListener {
-                                    addLicenseNumberToFireStore(view)
+                            if (licenseNo != null) {
+                                if (licenseNo.isEmpty()) {
+                                    Log.d("paymentInfo","False")
+                                    btnVerify.isEnabled = true
+                                    btnVerify.setBackgroundResource(R.drawable.round_button_task_history_active)
+                                    btnVerify.setOnClickListener {
+                                        addLicenseNumberToFireStore(view)
+                                    }
+                                } else {
+                                    Log.d("paymentInfo","True")
+                                    btnVerify.isEnabled = false
+                                    licenseStatus.text = "Status: Verification InProgress"
+                                    btnVerify.setBackgroundResource(R.drawable.round_button_task_history_inactive)
                                 }
-                            } else {
-                                Log.d("paymentInfo","True")
-                                btnVerify.isEnabled = false
-                                licenseStatus.text = "Status: Verification InProgress"
-                                btnVerify.setBackgroundResource(R.drawable.round_button_task_history_inactive)
                             }
 
                             progressBar.visibility = View.GONE
@@ -272,6 +280,38 @@ class PaymentInfoFragment: Fragment() {
         dialog.show()
     }
 
+    private val watcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
+        override fun afterTextChanged(s: Editable?) {
+            if (!isFormatting) {
+                isFormatting = true
+
+                // Remove any previous hyphens and restrict to 17 characters
+                var originalString = s.toString().replace("-", "")
+                if (originalString.length > 15) {
+                    originalString = originalString.substring(0, 15)
+                }
+
+                // Insert hyphens after every 5 characters
+                val formattedString = StringBuilder()
+                for (i in originalString.indices) {
+                    if (i > 0 && i % 5 == 0) {
+                        formattedString.append("-")
+                    }
+                    formattedString.append(originalString[i])
+                }
+
+                // Set the formatted string back to the EditText
+                licenseNumberField.setText(formattedString.toString())
+
+                // Move the cursor to the end of the EditText
+                licenseNumberField.setSelection(formattedString.length)
+
+                isFormatting = false
+            }
+        }
+    }
 }

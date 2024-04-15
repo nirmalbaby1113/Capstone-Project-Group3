@@ -143,6 +143,7 @@ class BottomSheetDialogFragment : BottomSheetDialogFragment() {
                             }
                             .addOnFailureListener { e ->
                                 // Handle the error
+                                dismiss()
                                 Log.w("Firestore", "Error updating document", e)
                             }
                     }
